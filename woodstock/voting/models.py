@@ -23,7 +23,7 @@ class MozillianProfile(models.Model):
     ircname = models.CharField(max_length=50, default='')
     tracking_groups = models.ManyToManyField(
         MozillianGroups, related_name='mozillians_tracking')
-    avatar_url = models.URLField(max_lenigth=400, default='')
+    avatar_url = models.URLField(max_length=400, default='')
     bio = models.TextField(blank=True, default='')
 
 
