@@ -9,14 +9,22 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # BrowserId
     url(r'^browserid/', include('django_browserid.urls')),
+
+    # Login/Logout
+    url(r'^login/failed/$', 'woodstock.voting.views.login_failed',
+        name='login_failed'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',
+        {'next_page': '/'}, name='logout'),
+
     # Voting urls
-    url(r'^', include('woodstock.voting.voting_urls')),
-    url(r'^v', include('woodstock.voting.v_urls')),
+    url(r'^dashboard/', include('woodstock.voting.voting_urls')),
+    #url(r'^v', include('woodstock.voting.v_urls')),
 
     # Admin:
     url(r'^admin/', include(admin.site.urls)),
-    (r'^$', TemplateView.as_view(template_name="index.html")),
-    (r'^dashboard/', TemplateView.as_view(template_name="dashboard.html")),
+
+    # Main Page
+    url(r'^$', 'woodstock.voting.views.main', name='main'),
 )
 
 ## In DEBUG mode, serve media files through Django.

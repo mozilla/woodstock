@@ -48,13 +48,6 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Uncomment the following line for local development, or BrowserID
-# will fail to log you in.
-SITE_URL = 'http://127.0.0.1:8000'
-
-# Path to redirect on successful login.
-LOGIN_REDIRECT_URL_FAILURE = '/login/failed'
-
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = './media/'
@@ -137,15 +130,27 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django_browserid.context_processors.browserid_form',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages')
+
 # Django browserid authentication backend
 AUTHENTICATION_BACKENDS = (
     'django_browserid.auth.BrowserIDBackend',
 )
 
-# Django browserid context processor.
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django_browserid.context_processors.browserid',
-)
+# Uncomment the following line for local development, or BrowserID
+# will fail to log you in.
+SITE_URL = 'http://127.0.0.1:8000'
+
+# Do not create account for new users.
+BROWSERID_CREATE_USER = False
+
+# Path to redirect to on successful login.
+LOGIN_REDIRECT_URL = '/dashboard'
+# Path to redirect to on unsuccessful login attempt.
+LOGIN_REDIRECT_URL_FAILURE = '/login/failed/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
