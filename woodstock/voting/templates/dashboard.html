@@ -33,7 +33,11 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Dashboard</a></li>
-              <li><a href="#contact">Sign out</a></li>
+              <li>
+                <a href="{% url 'logout' %}" class="browserid-logout">
+                  Sign out
+                </a>
+              </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -98,6 +102,6 @@
     <script src="/media/js/bootstrap.js"></script>
     <script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="/media/js/app.js"></script> 
-
+    {{ browserid_form.media }}
   </body>
 </html>
