@@ -17,9 +17,8 @@ class MozillianProfile(models.Model):
     """Mozillians User Profile"""
     full_name = models.CharField(max_length=100)
     email = models.EmailField(default='')
-    is_vouched = models.BooleanField()
-    city = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50, default='')
+    country = models.CharField(max_length=50, default='')
     ircname = models.CharField(max_length=50, default='')
     tracking_groups = models.ManyToManyField(
         MozillianGroups, related_name='mozillians_tracking')
