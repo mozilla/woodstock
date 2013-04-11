@@ -1,5 +1,6 @@
 $(document).ready(function() 
     { 
-        $("#mozillians").tablesorter(); 
+        $("#mozillians").tablesorter();
+        $('#shortcuts').tooltip();
     } 
 ); 

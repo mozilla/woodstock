@@ -44,4 +44,34 @@ h1, h2, h3, h4, h5, p, span, div {
   margin-top: 50px;
   margin-bottom: 30px;
   text-align: center;
+
+.btn-vote {
+  width: 60px !important;
+  height: 45px !important;
+}
+
+#sidebar {
+  text-align: left;
+}
+
+#sidebar img {
+  margin-bottom: 30px;
+}
+
+#sidebar a {
+  margin-top: 10px;
+}
+
+#vote-title {
+  font-weight: bold;
+  font-size: 20px;
+  display: inline-block;
+}
+
+#vote-container {
+  margin-top: 30px;
+}
+
+.label-info {
+  float: right;
 }
