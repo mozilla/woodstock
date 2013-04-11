@@ -48,6 +48,13 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+# Uncomment the following line for local development, or BrowserID
+# will fail to log you in.
+SITE_URL = 'http://127.0.0.1:8000'
+
+# Path to redirect on successful login.
+LOGIN_REDIRECT_URL_FAILURE = '/login/failed'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = './media/'
@@ -116,6 +123,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'django.contrib.auth',
+    'django_browserid',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -127,6 +135,16 @@ INSTALLED_APPS = (
     'woodstock.voting',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+)
+
+# Django browserid authentication backend
+AUTHENTICATION_BACKENDS = (
+    'django_browserid.auth.BrowserIDBackend',
+)
+
+# Django browserid context processor.
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django_browserid.context_processors.browserid',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -7,14 +7,13 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'woodstock.views.home', name='home'),
-    # url(r'^woodstock/', include('woodstock.foo.urls')),
+    # BrowserId
+    url(r'^browserid/', include('django_browserid.urls')),
+    # Voting urls
+    url(r'^', include('woodstock.voting.voting_urls')),
+    url(r'^v', include('woodstock.voting.v_urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    # Admin:
     url(r'^admin/', include(admin.site.urls)),
     (r'^$', TemplateView.as_view(template_name="index.html")),
     (r'^dashboard/', TemplateView.as_view(template_name="dashboard.html")),
@@ -28,4 +27,3 @@ if settings.DEBUG:
         url(r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT}),
     )
-
