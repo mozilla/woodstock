@@ -1,3 +1,4 @@
+{% load browserid %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -102,6 +103,6 @@
     <script src="/media/js/bootstrap.js"></script>
     <script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="/media/js/app.js"></script> 
-    {{ browserid_form.media }}
+    {% browserid_js %}
   </body>
 </html>
