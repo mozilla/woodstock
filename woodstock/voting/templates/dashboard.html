@@ -47,10 +47,10 @@
     <div class="container">
 
       <h2>Stats</h2>
-        <p>So far you have voted for 60% of the list</p>
-        <div class="progress">
-          <div class="bar" style="width: 60%;"></div>
-        </div>
+      <p>So far you have voted for {{ status }}% of the list</p>
+      <div class="progress">
+        <div class="bar" style="width: {{ status }}%;"></div>
+      </div>
 
       <h2>List of mozillians</h2>
       <table id="mozillians" class="table table-hover">
@@ -63,7 +63,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for mozillian in mozillians %}
+          {% for mozillian, vote in mozillians.items %}
             <tr>
               <td>
                 <a href="{% url 'voting_view_voting' slug=mozillian.slug %}">
@@ -76,7 +76,7 @@
               <td>
                 {{ mozillian.country }}
               </td>
-              <td>2</td>
+              <td>{{ vote.vote }}</td>
             </tr>
           {% endfor %}
         </tbody>
