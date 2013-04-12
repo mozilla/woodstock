@@ -5,7 +5,7 @@ import urllib
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from woodstock.voting.models import MozillianProfile, MozillianGroups
+from woodstock.voting.models import MozillianProfile, MozillianGroup
 
 def fetch_summit_attendees():
     """Helper function to fetch summit attendees."""
@@ -63,12 +63,13 @@ class Command(BaseCommand):
             print user
             groups = []
             for group in user['groups']:
-                obj,created = MozillianGroups.objects.get_or_create(name=group)
+                obj,created = MozillianGroup.objects.get_or_create(name=group)
                 groups.append(obj)
 
             mozillian = MozillianProfile(
                 full_name = user['full_name'],
                 email = user['email'],
+                city = user['city'],
                 country = user['country'],
                 ircname = user['ircname'],
                 avatar_url = user['photo'],
@@ -76,4 +77,3 @@ class Command(BaseCommand):
 
             mozillian.save()
             mozillian.tracking_groups = groups
-            mozillian.save()

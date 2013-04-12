@@ -4,7 +4,7 @@ from django.db import models
 from uuslug import uuslug
 
 
-class MozillianGroups(models.Model):
+class MozillianGroup(models.Model):
     """Mozillians tracking groups."""
     name = models.CharField(max_length=100)
 
@@ -17,6 +17,7 @@ class MozillianGroups(models.Model):
 
 class MozillianProfile(models.Model):
     """Mozillians User Profile"""
+
     full_name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, max_length=100)
     email = models.EmailField(default='')
@@ -24,7 +25,7 @@ class MozillianProfile(models.Model):
     country = models.CharField(max_length=50, default='')
     ircname = models.CharField(max_length=50, default='')
     tracking_groups = models.ManyToManyField(
-        MozillianGroups, related_name='mozillians_tracking')
+        MozillianGroup, related_name='mozillians_tracking')
     avatar_url = models.URLField(max_length=400, default='')
     bio = models.TextField(blank=True, default='')
 
@@ -53,6 +54,8 @@ class MozillianProfile(models.Model):
 
 
 class Vote(models.Model):
+    """Vote relational model."""
+
     voter = models.ForeignKey(User)
     nominee = models.ForeignKey(MozillianProfile)
     vote = models.IntegerField(default=0)
