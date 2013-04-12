@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
+from models import MozillianProfile
+
 
 def main(request):
     """Main page view."""
@@ -11,10 +13,13 @@ def main(request):
 
 
 def dashboard(request):
-    if request.user.is_authenticated():
-        return render(request, 'dashboard.html')
-    else:
-        return redirect(main)
+    user = request.user
+    if user.is_authenticated():
+        mozillians = MozillianProfile.objects.all()
+        return render(request, 'dashboard.html',
+                      {'user': user,
+                       'mozillians': mozillians})
+    return redirect('main')
 
 
 def login_failed(request):
@@ -22,4 +27,14 @@ def login_failed(request):
     messages.warning(request, ('Login failed. Please make sure that you '
                                'have an account, and your email '
                                'is verified.'))
+    return redirect('main')
+
+
+def view_voting(request, slug):
+    """View voting and cast a vote view."""
+    user = request.user
+
+    if user.is_authenticated():
+        return render(request, 'vote.html')
+
     return render(request, 'index.html')
