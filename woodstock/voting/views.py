@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from models import MozillianProfile
 
@@ -33,8 +33,26 @@ def login_failed(request):
 def view_voting(request, slug):
     """View voting and cast a vote view."""
     user = request.user
-
+    mozillian = get_object_or_404(MozillianProfile, slug=slug)
     if user.is_authenticated():
-        return render(request, 'vote.html')
+
+        # Mozillian data for vote page
+        args = {}
+        args['name'] = mozillian.full_name
+        args['email'] = mozillian.email
+        args['city'] = mozillian.city
+        args['country'] = mozillian.country
+        args['irc'] = mozillian.ircname
+        args['groups'] = mozillian.tracking_groups.all()
+        args['bio'] = mozillian.bio
+        args['avatar_url'] = mozillian.avatar_url
+
+        #TODO: previous, next
+        args['previous'] =(mozillian.get_previous_entry()).slug
+        args['next'] = (mozillian.get_next_entry()).slug
+        #TODO: bugzilla activity
+        #TODO: mozillians profile
+
+        return render(request, 'vote.html', args)
 
     return render(request, 'index.html')
