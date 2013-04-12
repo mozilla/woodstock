@@ -63,8 +63,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            {% for mozillian in mozillians %}
+          {% for mozillian in mozillians %}
+            <tr>
               <td>
                 <a href="{% url 'voting_view_voting' slug=mozillian.slug %}">
                   {{ mozillian.full_name }}
@@ -77,8 +77,8 @@
                 {{ mozillian.country }}
               </td>
               <td>2</td>
-            {% endfor %}
-          </tr>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
 </body>
