@@ -1,2 +1,2 @@
 django
-django-browserid==0.7.1
+django-browserid==0.8

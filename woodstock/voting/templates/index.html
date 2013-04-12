@@ -1,3 +1,4 @@
+{% load browserid %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,16 +21,26 @@
   </head>
 
   <body>
+    {% browserid_info %}
     <div class="container">
 
       <div class="form-signin">
-        <h2 class="form-signin-heading">Sign in Summit Voting</h2>
+        <h2 class="form-signin-heading">Summit 2013 Voting</h2>
         {% if not user.is_authenticated %}
-          <a class="browserid-login btn btn-large btn-primary" href="#">Sign in</a>
-          <form method="POST" action="{% url 'browserid_verify' %}">
-            {% csrf_token %} {{ browserid_form.as_p }}
-          </form>
+          <div id="login">
+            <img class="browserid-login" data-next="/dashboard/" src="/media/img/plain_sign_in_blue.png">
+          </div>
         {% endif %}
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert fade in">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
       </div>
 
     </div> <!-- /container -->
@@ -39,6 +50,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/media/js/jquery-1.9.1.min.js"></script>
     <script src="/media/js/bootstrap.js"></script>
-    {{ browserid_form.media }}
+    {% browserid_js %}
   </body>
 </html>

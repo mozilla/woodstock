@@ -131,7 +131,7 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django_browserid.context_processors.browserid_form',
+    'django_browserid.context_processors.browserid',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages')
 
@@ -148,7 +148,7 @@ SITE_URL = 'http://127.0.0.1:8000'
 BROWSERID_CREATE_USER = False
 
 # Path to redirect to on successful login.
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_REDIRECT_URL = '/dashboard/'
 # Path to redirect to on unsuccessful login attempt.
 LOGIN_REDIRECT_URL_FAILURE = '/login/failed/'
 
