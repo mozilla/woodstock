@@ -41,16 +41,16 @@ class MozillianProfile(models.Model):
         super(MozillianProfile, self).save(*args, **kwargs)
 
     def get_next_entry(self):
-        next_entry = MozillianProfile.filter(id__gt=self.id)
+        next_entry = MozillianProfile.objects.filter(id__gt=self.id).order_by('id')
         if next_entry:
             return next_entry[0]
-        return False
+        return MozillianProfile.objects.order_by('id')[0]
 
     def get_previous_entry(self):
-        previous_entry = MozillianProfile.objects.filter(id__lt=self.id)
+        previous_entry = MozillianProfile.objects.filter(id__lt=self.id).order_by('-id')
         if previous_entry:
             return previous_entry[0]
-        return False
+        return MozillianProfile.objects.order_by('-id')[0]
 
 
 class Vote(models.Model):

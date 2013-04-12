@@ -50,13 +50,13 @@
       <div class="span12">
         <ul class="pager">
           <li class="previous">
-            <a href="#">&larr; Previous</a>
+            <a href="{% url 'voting_view_voting' slug=previous %}">&larr; Previous</a>
             <li>
-              <div id="vote-title">Vote for Axileas Pipinelis</div>
+              <div id="vote-title">Vote for {{ name }}</div>
             </li>
           </li>
           <li class="next">
-            <a href="#">Next &rarr;</a>
+            <a href="{% url 'voting_view_voting' slug=next %}">Next &rarr;</a>
           </li>
         </ul>
 
@@ -66,7 +66,7 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <div id="sidebar" class="span2">
-          <img class="img-circle" src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" />
+          <img class="img-circle" src={{ avatar_url }} />
           <a href="#" class="btn btn-small">
             Mozillians Profile
           </a>
@@ -81,7 +81,7 @@
                 <span class="label label-info">Name</span>
               </div>
               <div class="span10">
-                <strong>Axileas Pipinelis</strong>
+                <strong>{{ name }}</strong>
               </div>
             </div>
             <div class="row-fluid">
@@ -89,7 +89,7 @@
                 <span class="label label-info">Email</span>
               </div>
               <div class="span10">
-                axil@gmail.com
+                {{ email }}
               </div>
             </div>
             <div class="row-fluid">
@@ -97,7 +97,7 @@
                 <span class="label label-info">City</span>
               </div>
               <div class="span10">
-                Athens
+                {{ city }}
               </div>
             </div>
             <div class="row-fluid">
@@ -105,7 +105,7 @@
                 <span class="label label-info">Country</span>
               </div>
               <div class="span10">
-                Greece
+                {{ country }}
               </div>
             </div>
             <div class="row-fluid">
@@ -113,7 +113,7 @@
                 <span class="label label-info">IRC Nick</span>
               </div>
               <div class="span10">
-                axil
+                {{ irc }}
               </div>
             </div>
             <div class="row-fluid">
@@ -121,11 +121,9 @@
                 <span class="label label-info">Groups</span>
               </div>
               <div class="span10">
-                <span class="badge">l10n</span>
-                <span class="badge">summit2013</span>
-                <span class="badge">greece</span>
-                <span class="badge">localization</span>
-                <span class="badge">support</span>
+		{% for group in groups %}
+                <span class="badge">{{ group.name }}</span>
+		{% endfor %}
               </div>
             </div>
             <div class="row-fluid">
@@ -133,7 +131,7 @@
                 <span class="label label-info">Bio</span>
               </div>
               <div class="span10">
-                <p>Soufflé sesame snaps croissant liquorice lemon drops icing. Lemon drops sweet roll caramels muffin caramels croissant chocolate cake jelly-o macaroon. Soufflé faworki sweet roll. Cookie gummies wypas gingerbread cupcake. Jujubes sesame snaps chocolate cake caramels tiramisu carrot cake muffin soufflé. Marzipan sugar plum donut gummi bears danish wypas brownie. Applicake pie chocolate cake cupcake. Biscuit chocolate donut dessert topping. Sugar plum cake wypas.</p>
+                <p>{{ bio }}</p>
               </div>
             </div>
           </div>
