@@ -28,7 +28,10 @@ def dashboard(request):
         for i in mozillians_data.values():
             if i is not None:
                 votes += 1
-        status = int(round(100*float(votes)/float(mozillians_count)))
+        if float(mozillians_count) == 0:
+            status = 0
+        else:
+            status = int(round(100*float(votes)/float(mozillians_count)))
 
         return render(request, 'dashboard.html',
                       {'user': user,
