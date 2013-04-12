@@ -180,3 +180,11 @@ LOGGING = {
         },
     }
 }
+
+MOZILLIANS_URL = "https://mozillians.org"
+MOZILLIANS_API_URL = "https://mozillians.org/api/v1/users/"
+
+# Replace with your mozillians API credentials
+MOZILLIANS_APP_KEY = None
+MOZILLIANS_APP_NAME = None
+
