@@ -3,6 +3,8 @@ from django.shortcuts import redirect, render, get_object_or_404
 
 from models import MozillianProfile, Vote
 
+import forms
+
 
 def main(request):
     """Main page view."""
@@ -28,7 +30,7 @@ def dashboard(request):
         for i in mozillians_data.values():
             if i is not None:
                 votes += 1
-        if float(mozillians_count) == 0:
+        if mozillians_count == 0:
             status = 0
         else:
             status = int(round(100*float(votes)/float(mozillians_count)))
@@ -45,32 +47,31 @@ def login_failed(request):
     messages.warning(request, ('Login failed. Please make sure that you '
                                'have an account, and your email '
                                'is verified.'))
-    return redirect('main')
+    return render(request, 'index.html')
 
 
 def view_voting(request, slug):
     """View voting and cast a vote view."""
     user = request.user
-    mozillian = get_object_or_404(MozillianProfile, slug=slug)
     if user.is_authenticated():
-
-        # Mozillian data for vote page
-        args = {}
-        args['name'] = mozillian.full_name
-        args['email'] = mozillian.email
-        args['city'] = mozillian.city
-        args['country'] = mozillian.country
-        args['irc'] = mozillian.ircname
-        args['groups'] = mozillian.tracking_groups.all()
-        args['bio'] = mozillian.bio
-        args['avatar_url'] = mozillian.avatar_url
-
-        #TODO: previous, next
-        args['previous'] =(mozillian.get_previous_entry()).slug
-        args['next'] = (mozillian.get_next_entry()).slug
+        mozillian = get_object_or_404(MozillianProfile, slug=slug)
+        vote_form = forms.VoteForm(data=request.POST or None,
+                                   nominee=mozillian, voter=user)
+        # Check POST data and save form
+        if vote_form.is_valid():
+            if not (Vote.objects
+                    .filter(voter=user, nominee=mozillian).exists()):
+                Vote.objects.create(voter=user, nominee=mozillian)
+            vote_form.save()
+            next_entry = mozillian.get_next_entry()
+            if next_entry:
+                return redirect('voting_view_voting', slug=next_entry.slug)
+            return redirect('voting_dashboard')
         #TODO: bugzilla activity
         #TODO: mozillians profile
 
-        return render(request, 'vote.html', args)
+        return render(request, 'vote.html',
+                      {'mozillian': mozillian,
+                       'vote_form': vote_form})
 
     return render(request, 'index.html')
