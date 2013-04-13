@@ -39,7 +39,7 @@ def dashboard(request):
                       {'user': user,
                        'status': status,
                        'mozillians': mozillians_data})
-    return redirect('main')
+    return redirect(main)
 
 
 def login_failed(request):
@@ -66,7 +66,7 @@ def view_voting(request, slug):
             next_entry = mozillian.get_next_entry()
             if next_entry:
                 return redirect('voting_view_voting', slug=next_entry.slug)
-            return redirect('voting_dashboard')
+            return redirect(dashboard)
         #TODO: bugzilla activity
         #TODO: mozillians profile
 
