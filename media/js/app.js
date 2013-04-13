@@ -1,4 +1,13 @@
-$(document).ready(function() {
+/*global $, jQuery, document*/
+
+function check_submit(v) {
+    "use strict";
+    $('input[value=' + v + ']').attr('checked', true);
+    $('#voting_form').submit();
+}
+
+$(document).ready(function () {
+    "use strict";
     $("#mozillians").tablesorter();
     $('#shortcuts').tooltip();
 
@@ -12,36 +21,20 @@ $(document).ready(function() {
         $('#button-definitely').addClass('disabled');
     }
 
-    $('#button-no').click(function() {
-        $('input[value="-1"]').attr('checked', true);
-        $('#voting_form').submit();
-    });
-    $('#button-skip').click(function() {
-        $('input[value="0"]').attr('checked', true);
-        $('#voting_form').submit();
-    });
-    $('#button-probably').click(function() {
-        $('input[value="1"]').attr('checked', true);
-        $('#voting_form').submit();
-    });
-    $('#button-definitely').click(function() {
-        $('input[value="2"]').attr('checked', true);
-        $('#voting_form').submit();
-    });
+    $('#button-no').click(function () {check_submit("-1"); });
+    $('#button-skip').click(function () {check_submit("0"); });
+    $('#button-probably').click(function () {check_submit("1"); });
+    $('#button-definitely').click(function () {check_submit("2"); });
 
-    $(document).keydown( function(event) {
-        if (event.which == 88){
-            $('input[value="-1"]').attr('checked', true);
-            $('#voting_form').submit();
-        } else if (event.which == 48){
-            $('input[value="0"]').attr('checked', true);
-            $('#voting_form').submit();
-        } else if (event.which == 49){
-            $('input[value="1"]').attr('checked', true);
-            $('#voting_form').submit();
-        } else if (event.which == 50){
-            $('input[value="2"]').attr('checked', true);
-            $('#voting_form').submit();
+    $(document).keydown(function (event) {
+        if (event.which === 88) {
+            check_submit("-1");
+        } else if (event.which === 48) {
+            check_submit("0");
+        } else if (event.which === 49) {
+            check_submit("1");
+        } else if (event.which === 50) {
+            check_submit("2");
         }
     });
 });
