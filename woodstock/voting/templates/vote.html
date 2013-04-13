@@ -1,4 +1,5 @@
 {% load helpers %}
+{% load browserid %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,6 +38,11 @@
               <li>
                 <a href="{% url 'voting_dashboard' %}">Dashboard</a>
               </li>
+              <li>
+                <a href="{% url 'logout' %}" class="browserid-logout">
+                  Sign out
+                </a>
+              </li>
             </ul>
           </div>
           <!--/.nav-collapse --> </div>
@@ -73,7 +79,11 @@
       <div class="container-fluid">
         <div class="row-fluid">
           <div id="sidebar" class="span2">
-            <img class="img-circle" src={{ mozillian.avatar_url }} />
+            {% if mozillian.avatar_url %}
+              <img class="img-circle" src="{{ mozillian.avatar_url }}" />
+            {% else %}
+              <img class="img-circle" src="/media/img/shy.png" />
+            {% endif %}
             <a href="#" class="btn btn-small">
               Mozillians Profile
             </a>
@@ -196,6 +206,7 @@
     <script src="/media/js/bootstrap.js"></script>
     <script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="/media/js/app.js"></script>
+    {% browserid_js %}
   </form>
 </body>
 </html>

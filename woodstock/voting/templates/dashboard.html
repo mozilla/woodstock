@@ -30,9 +30,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Summit 2013 Voting</a>
+          <span class="brand">Summit 2013 Voting</span>
           <div class="nav-collapse collapse">
             <ul class="nav">
+              <li class="active">
+                <a href="{% url 'voting_dashboard' %}">Dashboard</a>
+              </li>
               <li>
                 <a href="{% url 'logout' %}" class="browserid-logout">
                   Sign out
@@ -56,7 +59,7 @@
       <table id="mozillians" class="table table-hover">
         <thead>
           <tr>
-            <th>First Name, Last Name</th>
+            <th>Full Name</th>
             <th>City</th>
             <th>Country</th>
             <th>Your vote</th>
