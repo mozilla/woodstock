@@ -30,17 +30,19 @@ class VoteForm(forms.Form):
         Dynamically set fields.
         """
         super(VoteForm, self).__init__(*args, **kwargs)
-        initial_data = 0
         if Vote.objects.filter(voter=voter, nominee=nominee).exists():
             initial_data = (Vote.objects
                             .filter(voter=voter, nominee=nominee)[0].vote)
-        self.fields['mozillian_vote__%s__%s'
-                    % (str(nominee.id), str(voter.id))] = (
-                        forms.ChoiceField(
-                            widget=HorizontalRadioSelect(),
-                            initial=initial_data,
-                            choices=VOTE_CHOICES,
-                            label=''))
+            self.fields['mozillian_vote__%s__%s' % (str(nominee.id), str(voter.id))] = (
+                forms.ChoiceField(widget=HorizontalRadioSelect(),
+                                  initial=initial_data,
+                                  choices=VOTE_CHOICES,
+                                  label=''))
+        else:
+            self.fields['mozillian_vote__%s__%s' % (str(nominee.id), str(voter.id))] = (
+                forms.ChoiceField(widget=HorizontalRadioSelect(),
+                                  choices=VOTE_CHOICES,
+                                  label=''))
 
     def save(self, *args, **kwargs):
         cdata = self.cleaned_data
