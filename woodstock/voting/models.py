@@ -33,7 +33,7 @@ class MozillianProfile(models.Model):
         return self.full_name
 
     class Meta:
-        ordering = ['full_name', 'country']
+        ordering = ['country', 'full_name']
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -41,17 +41,20 @@ class MozillianProfile(models.Model):
         super(MozillianProfile, self).save(*args, **kwargs)
 
     def get_next_entry(self):
-        next_entry = (MozillianProfile.objects
-                      .filter(id__gt=self.id))
-        if next_entry:
-            return next_entry[0]
+        index_next = None
+        qs = MozillianProfile.objects.all()
+        length = qs.count()
+        for index,item in enumerate(qs):
+            if (item == self) and (index <= length-2):
+                return qs[index+1]
         return False
 
     def get_previous_entry(self):
-        previous_entry = (MozillianProfile.objects
-                          .filter(id__lt=self.id))
-        if previous_entry:
-            return previous_entry[0]
+        index_prev = None
+        qs = MozillianProfile.objects.all()
+        for index,item in enumerate(qs):
+            if (item == self) and (index > 0):
+                return qs[index-1]
         return False
 
 
