@@ -8,7 +8,7 @@ function check_submit(v) {
 
 $(document).ready(function () {
     "use strict";
-    $("#mozillians").tablesorter();
+    $("#mozillians").tablesorter({sortList: [[2, 0], [0, 0]] });
     $('#shortcuts').tooltip();
 
     if ($('input[value="-1"]').is(':checked')) {

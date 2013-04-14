@@ -43,10 +43,6 @@ h1, h2, h3, h4, h5, p, span, div {
   margin-bottom: 10px;
 }
 
-.table-hover tbody tr:hover > td, .table-hover tbody tr:hover > th {
-  background-color: #eee;
-}
-
 #login {
   margin-top: 50px;
   margin-bottom: 30px;
@@ -113,4 +109,24 @@ h1, h2, h3, h4, h5, p, span, div {
 
 #voting_form {
   display: none;
+}
+
+/* Tables */
+table.tablesorter thead tr .header {
+  background-image: url(/media/img/bg.gif);
+  background-repeat: no-repeat;
+  background-position: center right;
+  cursor: pointer;
+}
+
+.table-hover tbody tr:hover > td, .table-hover tbody tr:hover > th {
+  background-color: #eee;
+}
+
+table.tablesorter thead tr .headerSortUp {
+  background-image: url(/media/img/asc.gif);
+}
+
+table.tablesorter thead tr .headerSortDown {
+  background-image: url(/media/img/desc.gif);
 }
