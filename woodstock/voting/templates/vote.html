@@ -82,10 +82,14 @@
           {% else %}
             <img class="img-circle" src="/media/img/shy.png" />
           {% endif %}
-          <a href="#" class="btn btn-small">
+          <a href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
+             target="_blank"
+             class="btn btn-small">
             Mozillians Profile
           </a>
-          <a href="#" class="btn btn-small">
+          <a href="https://bugzilla.mozilla.org/page.cgi?id=user_activity.html&action=run&who={{ mozillian.email }}"
+             target="_blank"
+             class="btn btn-small">
             Bugzilla Activity
           </a>
         </div>
