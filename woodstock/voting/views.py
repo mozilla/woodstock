@@ -20,16 +20,16 @@ def dashboard(request):
         mozillians_data = {}
         mozillians = MozillianProfile.objects.all()
         mozillians_count = mozillians.count()
-        votes = 0
+
         for mozillian in mozillians:
             vote = Vote.objects.filter(voter=user, nominee=mozillian)
             if vote:
                 mozillians_data[mozillian] = vote[0]
             else:
                 mozillians_data[mozillian] = None
-        for i in mozillians_data.values():
-            if i is not None:
-                votes += 1
+
+        votes = Vote.objects.all().count()
+
         if mozillians_count == 0:
             status = 0
         else:
