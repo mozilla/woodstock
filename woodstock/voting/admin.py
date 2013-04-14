@@ -28,6 +28,7 @@ class MozillianProfileAdmin(admin.ModelAdmin):
 
 class VoteAdmin(admin.ModelAdmin):
     model = Vote
+    list_display = ['voter', 'nominee', 'vote']
 
 
 class MozillianGroupAdmin(admin.ModelAdmin):
