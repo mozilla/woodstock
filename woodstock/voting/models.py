@@ -17,11 +17,11 @@ class MozillianGroup(models.Model):
 
 class MozillianProfile(models.Model):
     """Mozillians User Profile"""
-
     full_name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, max_length=100)
+    full_name = models.CharField(max_length=255)
     email = models.EmailField(default='')
-    city = models.CharField(max_length=50, default='')
+    city = models.CharField(max_length=50, default='', blank=True)
     country = models.CharField(max_length=50, default='')
     ircname = models.CharField(max_length=50, default='')
     tracking_groups = models.ManyToManyField(
@@ -55,13 +55,32 @@ class MozillianProfile(models.Model):
                 return qs[index-1]
         return False
 
+    @property
+    def positive(self):
+        return self.votes.filter(vote=1).count()
+
+    @property
+    def stellar(self):
+        return self.votes.filter(vote=2).count()
+
+    @property
+    def negative(self):
+        return self.votes.filter(vote=-1).count()
+
+    @property
+    def skip(self):
+        return self.votes.filter(vote=0).count()
+
 
 class Vote(models.Model):
     """Vote relational model."""
 
     voter = models.ForeignKey(User)
-    nominee = models.ForeignKey(MozillianProfile)
-    vote = models.IntegerField(default=0)
+    nominee = models.ForeignKey(MozillianProfile, related_name='votes')
+    vote = models.IntegerField(default=0, choices=((0, 'Skip'),
+                                                   (1, 'Probably'),
+                                                   (2, 'Definitely'),
+                                                   (-1, 'No')))
 
     def __unicode__(self):
         return '%s %s' % (self.voter, self.nominee)

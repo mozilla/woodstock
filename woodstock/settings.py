@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'django.contrib.admin',
+    'south',
     'woodstock.voting',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -187,3 +188,4 @@ MOZILLIANS_API_URL = "https://mozillians.org/api/v1/users/"
 MOZILLIANS_APP_KEY = None
 MOZILLIANS_APP_NAME = None
 
+LOGIN_URL = '/login/'

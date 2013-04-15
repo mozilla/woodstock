@@ -1,3 +1,4 @@
+{% load helpers %}
 {% load browserid %}
 {% load helpers %}
 <!DOCTYPE html>
@@ -67,12 +68,11 @@
           <thead>
             <tr>
               <th>Full Name</th>
+              <th>City</th>
               <th>Country</th>
               <th>Your vote</th>
-            </tr>
-          </thead>
           <tbody>
-            {% for mozillian, vote in mozillians.items %}
+            {% for mozillian in mozillians %}
               <tr>
                 <td>
                   <a href="{% url 'voting_view_voting' slug=mozillian.slug %}">
@@ -80,9 +80,12 @@
                   </a>
                 </td>
                 <td>
+                  {{ mozillian.city }}
+                </td>
+                <td>
                   {{ mozillian.country }}
                 </td>
-                <td>{{ vote.vote }}</td>
+                <td>{{ mozillian|get_vote:user }}</td>
               </tr>
             {% endfor %}
           </tbody>
