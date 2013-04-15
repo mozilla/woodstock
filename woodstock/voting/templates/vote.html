@@ -1,5 +1,4 @@
 {% load helpers %}
-{% load browserid %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,11 +34,6 @@
           <ul class="nav">
             <li>
               <a href="{% url 'voting_dashboard' %}">Dashboard</a>
-            </li>
-            <li>
-              <a href="{% url 'logout' %}" class="browserid-logout">
-                Sign out
-              </a>
             </li>
           </ul>
         </div>
@@ -214,6 +208,5 @@
   <script src="/media/js/bootstrap.js"></script>
   <script type="text/javascript" src="/media/js/jquery.tablesorter.min.js"></script>
   <script type="text/javascript" src="/media/js/app.js"></script>
-  {% browserid_js %}
 </body>
 </html>
