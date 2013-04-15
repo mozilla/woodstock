@@ -7,6 +7,12 @@ from django.conf import settings
 
 from woodstock.voting.models import MozillianProfile, MozillianGroup
 
+
+def BadStatusCodeError(Exception):
+    """Something went totally wrong."""
+    pass
+
+
 def fetch_summit_attendees():
     """Helper function to fetch summit attendees."""
 
@@ -58,22 +64,22 @@ class Command(BaseCommand):
         """Command handler."""
 
         attendees = fetch_summit_attendees()
-        print "Fetched attendees"
+        print('Fetching attendees')
         for user in attendees:
-            print user
             groups = []
             for group in user['groups']:
-                obj,created = MozillianGroup.objects.get_or_create(name=group)
+                obj, created = MozillianGroup.objects.get_or_create(name=group)
                 groups.append(obj)
 
             mozillian = MozillianProfile(
-                full_name = user['full_name'],
-                email = user['email'],
-                city = user['city'],
-                country = user['country'],
-                ircname = user['ircname'],
-                avatar_url = user['photo'],
-                bio = user['bio'])
+                full_name=user['full_name'],
+                email=user['email'],
+                city=user['city'],
+                country=user['country'],
+                ircname=user['ircname'],
+                avatar_url=user['photo'],
+                bio=user['bio'])
 
             mozillian.save()
-            mozillian.tracking_groups = groups
+            mozillian.tracking_groups.add(groups)
+            print('Users successfully imported.')

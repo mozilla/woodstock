@@ -6,10 +6,10 @@ class MozillianProfileAdmin(admin.ModelAdmin):
     """Mozillian profiles under /admin."""
 
     search_fields = ['full_name', 'country']
-    list_display = ['full_name', 'email', 'city', 'country', 'negative',
-                    'skip', 'positive', 'stellar']
+    list_display = ['full_name', 'email', 'city', 'country', 'no',
+                    'skip', 'probably', 'definitely']
 
-    def negative(self, obj):
+    def no(self, obj):
         number = Vote.objects.filter(nominee=obj, vote=-1).count()
         return number
 
@@ -17,11 +17,11 @@ class MozillianProfileAdmin(admin.ModelAdmin):
         number = Vote.objects.filter(nominee=obj, vote=0).count()
         return number
 
-    def positive(self, obj):
+    def probably(self, obj):
         number = Vote.objects.filter(nominee=obj, vote=1).count()
         return number
 
-    def stellar(self, obj):
+    def definitely(self, obj):
         number = Vote.objects.filter(nominee=obj, vote=2).count()
         return number
 
