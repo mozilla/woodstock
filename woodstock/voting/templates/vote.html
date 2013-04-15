@@ -46,9 +46,9 @@
     <div class="row">
       <div class="span12">
         <ul class="pager">
-          {% if mozillian|get_previous %}
+          {% if mozillian.get_previous_entry %}
             <li class="previous">
-              <a href="{% url 'voting_view_voting' slug=mozillian|get_previous %}">
+              <a href="{% url 'voting_view_voting' slug=mozillian.get_previous_entry.slug %}">
                 &larr; <span class="block visible-desktop">Previous</span>
               </a>
             </li>
@@ -56,9 +56,9 @@
           <li>
             <div id="vote-title">Vote for {{ mozillian.full_name }}</div>
           </li>
-          {% if mozillian|get_next %}
+          {% if mozillian.get_next_entry %}
             <li class="next">
-              <a href="{% url 'voting_view_voting' slug=mozillian|get_next %}">
+              <a href="{% url 'voting_view_voting' slug=mozillian.get_next_entry.slug %}">
                 <span class="block visible-desktop">Next</span> &rarr;
               </a>
             </li>
@@ -134,7 +134,7 @@
                 <span class="label label-info">Groups</span>
               </div>
               <div class="span10 groups">
-                {% for group in mozillian|get_mozillian_groups %}
+                {% for group in mozillian.tracking_groups.all %}
                   <span class="badge">{{ group.name }}</span>
                 {% endfor %}
               </div>
@@ -198,7 +198,6 @@
   <form id="voting_form" method="post">
     {% csrf_token %}
     {{ vote_form }}
-    <button class="voting_submit">Vote</button>
   </form>
   <!-- /container -->
 

@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -15,6 +14,8 @@ urlpatterns = patterns('',
         name='login_failed'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
         {'next_page': '/'}, name='logout'),
+    url('^login/$', 'woodstock.voting.views.login_required_view',
+        name='login_required'),
 
     # Voting urls
     url(r'^dashboard/', include('woodstock.voting.voting_urls')),

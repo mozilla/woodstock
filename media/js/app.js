@@ -2,7 +2,8 @@
 
 function check_submit(v) {
     "use strict";
-    $('input[value=' + v + ']').attr('checked', true);
+    $('#id_vote option').removeAttr('selected');
+    $('#id_vote option[value='+ v + ']').attr('selected', 'selected');
     $('#voting_form').submit();
 }
 

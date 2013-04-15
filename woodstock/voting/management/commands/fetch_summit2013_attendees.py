@@ -1,10 +1,10 @@
-import json
 import requests
 import urllib
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
+from django_countries import countries
 from woodstock.voting.models import MozillianProfile, MozillianGroup
 
 
@@ -18,38 +18,30 @@ def fetch_summit_attendees():
 
     MOZILLIANS_URL = settings.MOZILLIANS_URL
     MOZILLIANS_API_URL = settings.MOZILLIANS_API_URL
-    MOZILLIANS_APP_KEY = settings.MOZILLIANS_APP_KEY
-    MOZILLIANS_APP_NAME = settings.MOZILLIANS_APP_NAME
-
-    data = {'app_name': MOZILLIANS_APP_NAME,
-            'app_key': MOZILLIANS_APP_KEY,
+    summit = []
+    data = {'app_name': settings.MOZILLIANS_APP_NAME,
+            'app_key': settings.MOZILLIANS_APP_KEY,
             'limit': 200,
             'is_vouched': True}
 
     MOZILLIANS_API_URL += '?' + urllib.urlencode(data)
 
-    resp = requests.get(MOZILLIANS_API_URL)
-
-    if not resp.status_code == 200:
-        raise BadStatusCodeError('Error in HTTP response status')
-
-    content = json.loads(resp.content)
-    users = content['objects']
-
-    while content['meta']['next']:
-        resp = requests.get(MOZILLIANS_URL + content['meta']['next'])
-        print content['meta']['next']
+    url = MOZILLIANS_API_URL
+    while True:
+        resp = requests.get(url)
 
         if not resp.status_code == 200:
-            raise BadStatusCodeError('Error in HTTP response status')
+            raise ValueError('Error in HTTP response status')
 
-        content = json.loads(resp.content)
-        users += content['objects']
+        content = resp.json()
+        for user in content['objects']:
+            if 'summit2013' in user.get(u'groups', []):
+                summit.append(user)
 
-    summit = []
-    for user in users:
-        if 'summit2013' in user.get(u'groups', []):
-            summit.append(user)
+        if not content['meta'].get('next', ''):
+            break
+
+        url = MOZILLIANS_URL + content['meta']['next']
 
     return summit
 
@@ -75,7 +67,8 @@ class Command(BaseCommand):
                 full_name=user['full_name'],
                 email=user['email'],
                 city=user['city'],
-                country=user['country'],
+                country=(countries.OFFICIAL_COUNTRIES
+                         .get(user['country'].upper(), '').capitalize()),
                 ircname=user['ircname'],
                 avatar_url=user['photo'],
                 bio=user['bio'])
