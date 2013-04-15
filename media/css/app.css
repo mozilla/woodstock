@@ -49,6 +49,10 @@ h1, h2, h3, h4, h5, p, span, div {
   text-align: center;
 }
 
+#sidebar-stats {
+  position: fixed;
+}
+
 .btn-vote {
   width: 60px !important;
   height: 45px !important;
@@ -73,6 +77,11 @@ h1, h2, h3, h4, h5, p, span, div {
 }
 
 #vote-container {
+  margin-top: 30px;
+}
+
+#shortcuts-container {
+  text-align: center;
   margin-top: 30px;
 }
 
@@ -129,4 +138,9 @@ table.tablesorter thead tr .headerSortUp {
 
 table.tablesorter thead tr .headerSortDown {
   background-image: url(/media/img/desc.gif);
+}
+
+#site-title:hover {
+  cursor: default;
+  color: rgb(153, 153, 153);
 }
