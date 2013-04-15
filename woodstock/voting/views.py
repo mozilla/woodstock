@@ -9,9 +9,8 @@ import forms
 import json
 import os
 
-
-countries_codes = (open(os.path.join(settings.MEDIA_ROOT, 'js/countries.json'))
-                   .read())
+PROJECT_DIR = os.path.dirname(__file__)
+countries_codes = open(os.path.join(PROJECT_DIR, 'countries.json')).read()
 COUNTRIES = json.loads(countries_codes)
 VOTE_CHOICES = {0: 'Skip',
                 -1: 'No',

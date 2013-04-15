@@ -36,3 +36,8 @@ if settings.DEBUG:
         url(r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT}),
     )
+    static_url = settings.STATIC_URL.lstrip('/').rstrip('/')
+    urlpatterns += patterns('',
+        url(r'^%s/(?P<path>.*)$' % static_url, 'django.views.static.serve',
+            {'document_root': './woodstock/voting/static/'}),
+    )
