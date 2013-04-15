@@ -23,3 +23,12 @@ def get_previous(user):
     if user.get_previous_entry():
         return user.get_previous_entry().slug
     return False
+
+
+@register.filter
+def get_country(key, countries):
+    """Get the country from the country code."""
+    try:
+        return countries[key]
+    except KeyError:
+        return key

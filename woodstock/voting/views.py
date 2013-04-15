@@ -1,9 +1,21 @@
+from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 
 from models import MozillianProfile, Vote
 
 import forms
+import json
+import os
+
+
+countries_codes = (open(os.path.join(settings.MEDIA_ROOT, 'js/countries.json'))
+                   .read())
+COUNTRIES = json.loads(countries_codes)
+VOTE_CHOICES = {0: 'Skip',
+                -1: 'No',
+                1: 'Probably',
+                2: 'Definitely'}
 
 
 def main(request):
@@ -24,11 +36,11 @@ def dashboard(request):
         for mozillian in mozillians:
             vote = Vote.objects.filter(voter=user, nominee=mozillian)
             if vote:
-                mozillians_data[mozillian] = vote[0]
+                mozillians_data[mozillian] = VOTE_CHOICES[vote[0].vote]
             else:
                 mozillians_data[mozillian] = None
 
-        votes = Vote.objects.all().count()
+        votes = Vote.objects.filter(voter=user).count()
 
         if mozillians_count == 0:
             status = 0
@@ -38,7 +50,8 @@ def dashboard(request):
         return render(request, 'dashboard.html',
                       {'user': user,
                        'status': status,
-                       'mozillians': mozillians_data})
+                       'mozillians': mozillians_data,
+                       'countries': COUNTRIES})
     return redirect(main)
 
 
@@ -67,8 +80,6 @@ def view_voting(request, slug):
             if next_entry:
                 return redirect('voting_view_voting', slug=next_entry.slug)
             return redirect(dashboard)
-        #TODO: bugzilla activity
-        #TODO: mozillians profile
 
         return render(request, 'vote.html',
                       {'mozillian': mozillian,

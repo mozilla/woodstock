@@ -41,18 +41,16 @@ class MozillianProfile(models.Model):
         super(MozillianProfile, self).save(*args, **kwargs)
 
     def get_next_entry(self):
-        index_next = None
         qs = MozillianProfile.objects.all()
         length = qs.count()
-        for index,item in enumerate(qs):
+        for index, item in enumerate(qs):
             if (item == self) and (index <= length-2):
                 return qs[index+1]
         return False
 
     def get_previous_entry(self):
-        index_prev = None
         qs = MozillianProfile.objects.all()
-        for index,item in enumerate(qs):
+        for index, item in enumerate(qs):
             if (item == self) and (index > 0):
                 return qs[index-1]
         return False
