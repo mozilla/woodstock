@@ -9,16 +9,15 @@ function check_submit(v) {
 
 $(document).ready(function () {
     "use strict";
-    $("#mozillians").tablesorter({sortList: [[1, 0], [0, 0]] });
     $('#shortcuts').tooltip();
 
-    if ($('input[value="-1"]').is(':checked')) {
+    if ($('option[value="-1"]').is(':checked')) {
         $('#button-no').addClass('disabled');
-    } else if ($('input[value="0"]').is(':checked')) {
+    } else if ($('option[value="0"]').is(':checked')) {
         $('#button-skip').addClass('disabled');
-    } else if ($('input[value="1"]').is(':checked')) {
+    } else if ($('option[value="1"]').is(':checked')) {
         $('#button-probably').addClass('disabled');
-    } else if ($('input[value="2"]').is(':checked')) {
+    } else if ($('option[value="2"]').is(':checked')) {
         $('#button-definitely').addClass('disabled');
     }
 

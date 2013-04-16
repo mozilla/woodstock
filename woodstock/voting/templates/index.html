@@ -29,7 +29,7 @@
         <h2 class="form-signin-heading">Summit 2013 Voting</h2>
         {% if not user.is_authenticated %}
           <div id="login">
-            <img class="browserid-login" data-next="/dashboard/" src="/media/img/plain_sign_in_blue.png">
+            <img class="browserid-login" data-next="/dashboard/" src="{% static 'img/plain_sign_in_blue.png' %}">
           </div>
         {% endif %}
 

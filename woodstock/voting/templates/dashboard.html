@@ -64,7 +64,16 @@
       </div>
 
       <div class="span7">
-        <h2>List of mozillians</h2>
+        <div class="span6">
+          <h2>List of mozillians</h2>
+        </div>
+        <div id="filter-container" class="span6">
+          <div id="filter">
+            <span class="badge">voted</span>
+            <span class="badge">not-voted</span>
+            <span class="badge badge-info">all</span>
+          </div>
+        </div>
         <table id="mozillians" class="table table-hover tablesorter">
           <thead>
             <tr>
@@ -102,7 +111,7 @@
     <script type="text/javascript" src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/dashboard.js' %}"></script>
     {% browserid_js %}
   </body>
 </html>

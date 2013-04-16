@@ -157,3 +157,12 @@ table.tablesorter thead tr .headerSortDown {
   cursor: default;
   color: rgb(153, 153, 153);
 }
+
+#filter {
+  float:right;
+  margin-top: 30px;
+}
+
+#filter span {
+  cursor: pointer;
+}
