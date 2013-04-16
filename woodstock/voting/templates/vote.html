@@ -75,7 +75,7 @@
           {% if mozillian.avatar_url %}
             <img class="img-circle avatar" src="{{ mozillian.avatar_url }}" />
           {% else %}
-            <img class="img-circle avatar" src="/media/img/shy.png" />
+            <img class="img-circle avatar" src="{% static 'img/shy.png' %}" />
           {% endif %}
           <a href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
              target="_blank"

@@ -56,12 +56,34 @@
       <div class="span3 offset1 visible-desktop">
         <div id="sidebar-stats">
           <h2>Stats</h2>
-          <p>So far you have voted for {{ status.total }}% of the list</p>
+          <p>You have voted for <span id="status-total">{{ status.total }}</span>% of the list,
+            <span id="status-msg"></span>
+          </p>
           <div class="progress">
-            <div class="bar bar-danger" style="width: {{ status.no }}%;"></div>
-            <div class="bar" style="width: {{ status.skip }}%;"></div>
-            <div class="bar bar-warning" style="width: {{ status.positive }}%;"></div>
-            <div class="bar bar-success" style="width: {{ status.definitely }}%;"></div>
+            <div class="bar bar-danger"
+                 style="width: {{ status.no }}%;"
+                 data-html="true"
+                 data-toggle="tooltip"
+                 data-placement="bottom"
+                 title="{{ status.no }}% No"></div>
+            <div class="bar"
+                 style="width: {{ status.skip }}%;"
+                 data-html="true"
+                 data-toggle="tooltip"
+                 data-placement="bottom"
+                 title="{{ status.skip }}% Skip"></div>
+            <div class="bar bar-warning"
+                 style="width: {{ status.positive }}%;"
+                 data-html="true"
+                 data-toggle="tooltip"
+                 data-placement="bottom"
+                 title="{{ status.positive }}% Positive"></div>
+            <div class="bar bar-success"
+                 style="width: {{ status.definitely }}%;"
+                 data-html="true"
+                 data-toggle="tooltip"
+                 data-placement="bottom"
+                 title="{{ status.definitely }}% Definitely"></div>
           </div>
         </div>
       </div>
