@@ -69,9 +69,9 @@
         </div>
         <div id="filter-container" class="span6">
           <div id="filter">
-            <span class="badge">voted</span>
-            <span class="badge">not-voted</span>
-            <span class="badge badge-info">all</span>
+            <span id="filter-voted" class="badge">voted</span>
+            <span id="filter-not-voted" class="badge">not-voted</span>
+            <span id="filter-all" class="badge badge-info">all</span>
           </div>
         </div>
         <table id="mozillians" class="table table-hover tablesorter">
@@ -93,9 +93,7 @@
                 <td>
                   {{ mozillian.country }}
                 </td>
-                <td>
-                  {{ mozillian|get_vote:user }}
-                </td>
+                <td>{{ mozillian|get_vote:user }}</td>
               </tr>
             {% endfor %}
           </tbody>
