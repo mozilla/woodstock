@@ -74,8 +74,7 @@ class MozillianProfile(models.Model):
 
 class Vote(models.Model):
     """Vote relational model."""
-
-    voter = models.ForeignKey(User)
+    voter = models.ForeignKey(User, related_name='user_votes')
     nominee = models.ForeignKey(MozillianProfile, related_name='votes')
     vote = models.IntegerField(default=0, choices=((0, 'Skip'),
                                                    (1, 'Probably'),
