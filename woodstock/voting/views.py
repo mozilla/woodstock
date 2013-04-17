@@ -70,10 +70,13 @@ def view_voting(request, slug):
     mozillian = get_object_or_404(MozillianProfile, slug=slug)
     if mozillian.votes.filter(voter=request.user).exists():
         instance = mozillian.votes.get(voter=request.user)
+        extra = instance.vote
     else:
         instance = Vote(voter=request.user, nominee=mozillian)
+        extra = None
     vote_form = forms.VoteForm(data=request.POST or None,
-                               instance=instance)
+                               instance=instance,
+                               initial={'vote': extra})
     # Check POST data and save form
     if vote_form.is_valid():
         vote_form.save()
