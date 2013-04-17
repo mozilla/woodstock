@@ -74,5 +74,5 @@ class Command(BaseCommand):
                 bio=user['bio'])
 
             mozillian.save()
-            mozillian.tracking_groups.add(groups)
+            mozillian.tracking_groups = groups
             print('Users successfully imported.')
