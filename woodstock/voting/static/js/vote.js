@@ -2,8 +2,8 @@
 
 function check_submit(v) {
     "use strict";
-    $('#id_vote option').removeAttr('selected');
-    $('#id_vote option[value='+ v + ']').attr('selected', 'selected');
+    $('input').removeAttr('checked');
+    $('input[value=' + v + ']').prop('checked', true);
     $('#voting_form').submit();
 }
 
@@ -11,13 +11,13 @@ $(document).ready(function () {
     "use strict";
     $('#shortcuts').tooltip();
 
-    if ($('option[value="-1"]').is(':checked')) {
+    if ($('input[value="-1"]').is(':checked')) {
         $('#button-no').addClass('disabled');
-    } else if ($('option[value="0"]').is(':checked')) {
+    } else if ($('input[value="0"]').is(':checked')) {
         $('#button-skip').addClass('disabled');
-    } else if ($('option[value="1"]').is(':checked')) {
+    } else if ($('input[value="1"]').is(':checked')) {
         $('#button-probably').addClass('disabled');
-    } else if ($('option[value="2"]').is(':checked')) {
+    } else if ($('input[value="2"]').is(':checked')) {
         $('#button-definitely').addClass('disabled');
     }
 
