@@ -188,3 +188,9 @@ MOZILLIANS_APP_KEY = None
 MOZILLIANS_APP_NAME = None
 
 LOGIN_URL = '/login/'
+
+
+try:
+    from local_settings import *
+except:
+    pass
