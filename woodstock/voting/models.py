@@ -17,7 +17,6 @@ class MozillianGroup(models.Model):
 
 class MozillianProfile(models.Model):
     """Mozillians User Profile"""
-    full_name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, max_length=100)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(default='')
@@ -28,6 +27,7 @@ class MozillianProfile(models.Model):
         MozillianGroup, related_name='mozillians_tracking')
     avatar_url = models.URLField(max_length=400, default='')
     bio = models.TextField(blank=True, default='')
+    username = models.CharField(max_length=100, default='')
 
     def __unicode__(self):
         return self.full_name
