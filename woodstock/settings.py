@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'woodstock.voting',
+    'import_export',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

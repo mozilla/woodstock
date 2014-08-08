@@ -3,3 +3,4 @@ django-browserid==0.8
 django-uuslug
 south
 django-countries
+django-import-export
