@@ -1,10 +1,12 @@
 import requests
 import urllib
 
+from optparse import make_option
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from django_countries import countries
+from django_countries import data
 from woodstock.voting.models import MozillianProfile, MozillianGroup
 
 
@@ -13,20 +15,21 @@ def BadStatusCodeError(Exception):
     pass
 
 
-def fetch_summit_attendees():
-    """Helper function to fetch summit attendees."""
+def fetch_mozillians_by_group(group):
+    """Helper function to fetch users in a mozillians.org group."""
 
     MOZILLIANS_URL = settings.MOZILLIANS_URL
     MOZILLIANS_API_URL = settings.MOZILLIANS_API_URL
-    summit = []
     data = {'app_name': settings.MOZILLIANS_APP_NAME,
             'app_key': settings.MOZILLIANS_APP_KEY,
             'limit': 200,
-            'is_vouched': True}
+            'is_vouched': True,
+            'groups': group}
 
     MOZILLIANS_API_URL += '?' + urllib.urlencode(data)
 
     url = MOZILLIANS_API_URL
+    mozillians = []
     while True:
         resp = requests.get(url)
 
@@ -35,29 +38,36 @@ def fetch_summit_attendees():
 
         content = resp.json()
         for user in content['objects']:
-            if 'summit2013' in user.get(u'groups', []):
-                summit.append(user)
+            mozillians.append(user)
 
         if not content['meta'].get('next', ''):
             break
 
         url = MOZILLIANS_URL + content['meta']['next']
 
-    return summit
+    return mozillians
 
 
 class Command(BaseCommand):
-    """Management command to fetch Summit attendees from mozillians.org."""
+    help = 'Fetch candidates by mozillians.org group.'
 
-    args = None
-    help = 'Fetch Mozilla Summit 2013 attendees from mozillians.org'
+    option_list = BaseCommand.option_list + (
+        make_option('-g', '--group',
+                    action='store',
+                    dest='group',
+                    default=None,
+                    help='mozillians.org group'),
+    )
 
     def handle(self, *args, **options):
         """Command handler."""
 
-        attendees = fetch_summit_attendees()
-        print('Fetching attendees')
-        for user in attendees:
+        if not options['group']:
+            raise ValueError('mozillians.org group not given')
+
+        candidates = fetch_mozillians_by_group(options['group'])
+        print('Fetching candidates...')
+        for user in candidates:
             groups = []
             for group in user['groups']:
                 obj, created = MozillianGroup.objects.get_or_create(name=group)
@@ -67,7 +77,7 @@ class Command(BaseCommand):
                 full_name=user['full_name'],
                 email=user['email'],
                 city=user['city'],
-                country=(countries.OFFICIAL_COUNTRIES
+                country=(data.COUNTRIES
                          .get(user['country'].upper(), '').capitalize()),
                 ircname=user['ircname'],
                 avatar_url=user['photo'],
@@ -76,3 +86,5 @@ class Command(BaseCommand):
             mozillian.save()
             mozillian.tracking_groups = groups
             print('Users successfully imported.')
+
+        print('{0} candidates fetched'.format(len(candidates)))
