@@ -82,4 +82,4 @@ class Vote(models.Model):
                                                    (-1, 'No')))
 
     def __unicode__(self):
-        return '%s %s' % (self.voter, self.nominee)
+        return u'%s %s' % (self.voter, self.nominee.slug)
