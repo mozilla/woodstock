@@ -57,7 +57,19 @@ class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
         return obj.votes.filter(vote=2).count()
 
 
+class VoteResource(resources.ModelResource):
+    voter = fields.Field()
+
+    class Meta:
+        model = Vote
+        fields = ['voter', 'nominee__full_name', 'vote']
+
+    def dehydrate_voter(self, vote):
+        return '%s %s' % (vote.voter.first_name, vote.voter.last_name)
+
+
 class VoteAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = VoteResource
     model = Vote
     list_display = ['voter', 'nominee', 'vote']
 
