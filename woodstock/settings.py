@@ -1,4 +1,5 @@
 # Django settings for woodstock project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,13 +12,17 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg3', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'woodstock-db',                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg3', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'woodstock-db',
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        # Empty for localhost through domain sockets or '127.0.0.1'
+        # for localhost through TCP. '',
+        'HOST': '',
+        # Set to empty string for default.
+        'PORT': '',
     }
 }
 
@@ -48,7 +53,6 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-import os
 PROJECT_DIR = os.path.dirname(__file__)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
@@ -78,7 +82,6 @@ STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'voting/static'),)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -88,7 +91,6 @@ SECRET_KEY = '=%q7b6%)^0y%$jw)5l$asp3=4x!n47b!*4pb()@ls8e2+vu1mp'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -149,7 +151,7 @@ BROWSERID_CREATE_USER = False
 # Path to redirect to on successful login.
 LOGIN_REDIRECT_URL = '/dashboard/'
 # Path to redirect to on unsuccessful login attempt.
-LOGIN_REDIRECT_URL_FAILURE = '/login/failed/'
+LOGIN_REDIRECT_URL_FAILURE = '/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -192,6 +194,6 @@ LOGIN_URL = '/login/'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 try:
-    from local_settings import *
+    from local_settings import * # noqa
 except:
     pass
