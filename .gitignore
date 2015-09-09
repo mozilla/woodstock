@@ -1,3 +1,4 @@
 woodstock-db
 *.pyc
 local_settings.py
+/static
