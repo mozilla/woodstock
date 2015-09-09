@@ -130,7 +130,6 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django_browserid.context_processors.browserid',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages')
 
