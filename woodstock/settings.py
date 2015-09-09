@@ -123,7 +123,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'django.contrib.admin',
-    'south',
     'woodstock.voting',
     'import_export',
     # Uncomment the next line to enable admin documentation:
@@ -137,6 +136,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Django browserid authentication backend
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
     'django_browserid.auth.BrowserIDBackend',
 )
 
