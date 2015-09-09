@@ -1,6 +1,11 @@
-django==1.5.9
-django-browserid==0.8
-django-uuslug
-south
-django-countries
-django-import-export
+# sha256: HbXa_k_oMC80RJKDhkuqdNDWQBNhOqIAkYGHv3aQLV8
+# sha256: uTV9LOvmGZcFXUF9YH-cZQ6BfNGjg7mhuIvx7a15fHU
+django==1.7.10
+# sha256: -jPrQhcqGbcVrbp6ZJcJEftdj9G2nPjaepXyvH8PMDs
+django-browserid==1.0.0
+# sha256: X2TXWlm528Ztu2nYaCcQPeeu_XrCTxEViTBva2x9e6s
+django-uuslug==1.1.6
+# sha256: EYJwcOvPIB0i6lMaqQ4YFGyolYC9GJehMuuK-8azW30
+django-countries==3.3
+# sha256: 0gYqYwX01zgADcoYluaaqH8rmwdEqVzCXa1jGhxwKFw
+django-import-export==0.2.8
