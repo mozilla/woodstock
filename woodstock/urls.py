@@ -6,14 +6,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     # BrowserId
-    url(r'^browserid/', include('django_browserid.urls')),
-    # Login/Logout
-    url(r'^login/failed/$', 'woodstock.voting.views.login_failed',
-        name='login_failed'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout',
-        {'next_page': '/'}, name='logout'),
-    url('^login/$', 'woodstock.voting.views.login_required_view',
-        name='login_required'),
+    url(r'', include('django_browserid.urls')),
     # Voting urls
     url(r'^dashboard/', include('woodstock.voting.voting_urls')),
     url(r'^v/', include('woodstock.voting.v_urls')),

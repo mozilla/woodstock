@@ -24,6 +24,7 @@
   </head>
 
   <body>
+    {% browserid_info %}
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -40,9 +41,7 @@
                 <a href="{% url 'voting_dashboard' %}">Dashboard</a>
               </li>
               <li>
-                <a href="{% url 'logout' %}" class="browserid-logout">
-                  Sign out
-                </a>
+                {% browserid_logout text='Logout' %}
               </li>
             </ul>
           </div><!--/.nav-collapse -->

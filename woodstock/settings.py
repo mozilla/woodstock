@@ -147,11 +147,14 @@ SITE_URL = 'http://127.0.0.1:8000'
 
 # Do not create account for new users.
 BROWSERID_CREATE_USER = False
+BROWSERID_AUDIENCES = [SITE_URL]
+BROWSERID_VERIFY_CLASS = 'woodstock.voting.views.BrowserIDVerify'
 
 # Path to redirect to on successful login.
 LOGIN_REDIRECT_URL = '/dashboard/'
 # Path to redirect to on unsuccessful login attempt.
 LOGIN_REDIRECT_URL_FAILURE = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

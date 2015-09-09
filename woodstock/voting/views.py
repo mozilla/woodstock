@@ -2,14 +2,22 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
+from django_browserid.http import JSONResponse
+from django_browserid.views import Verify
+
 from models import MozillianProfile, Vote
 
 import forms
 
 
-def login_required_view(request):
-    messages.info(request, 'Please login first.')
-    return redirect('main')
+class BrowserIDVerify(Verify):
+
+    def login_failure(self, msg=''):
+        if not msg:
+            msg = (u'Login failed. Please make sure that you have a verified '
+                   u'email and an account register to this site.')
+        messages.warning(self.request, msg)
+        return JSONResponse({'redirect': self.failure_url})
 
 
 def main(request):
@@ -54,14 +62,6 @@ def dashboard(request):
                   {'user': user,
                    'status': status,
                    'mozillians': mozillians})
-
-
-def login_failed(request):
-    """Redirect to login page on login failure."""
-    messages.warning(request, ('Login failed. Please make sure that you '
-                               'have an account, and your email '
-                               'is verified.'))
-    return render(request, 'index.html')
 
 
 @login_required
