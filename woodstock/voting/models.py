@@ -4,6 +4,50 @@ from django.db import models
 from uuslug import uuslug
 
 
+class Event(models.Model):
+    """Events model.
+
+    Mozillians can apply to attend these events.
+    """
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(blank=True, max_length=255)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.slug = uuslug(self.full_name, instance=self)
+        super(Event, self).save(*args, **kwargs)
+
+
+class Application(models.Model):
+    """Aplication model for Mozillians."""
+    entry_id = models.IntegerField(default=0)
+    number_of_events = models.IntegerField(default=1)
+    event = models.ManyToManyField(Event, through='PreferredEvent')
+    reasoning = models.TextField(blank=True, default='')
+    contributions = models.TextField(default='', blank=True)
+    learning_areas = models.TextField(default='', blank=True)
+    recommendation_letter = models.CharField(max_length=255, default='',
+                                             blank=True)
+    ideas = models.TextField(blank=True, default='')
+    commitments = models.TextField(blank=True, default='')
+    functional_team = models.CharField(max_length=255, default='', blank=True)
+    team_contact = models.CharField(max_length=255, default='', blank=True)
+    participation_opportunities = models.TextField(default='', blank=True)
+    tracking_communities = models.TextField(default='', blank=True)
+    community_record = models.TextField(default='', blank=True)
+    community_impact = models.TextField(default='', blank=True)
+    other = models.TextField(default='', blank=True)
+    date = models.DateTimeField(null=True, blank=True)
+    apllication_complete = models.BooleanField(default=False)
+
+
+class PreferredEvent(models.Model):
+    event = models.ForeignKey(Event)
+    application = models.ForeignKey(Application)
+    preferred = models.BooleanField(default=False)
+    reason = models.TextField(blank=True, default='')
+
+
 class MozillianGroup(models.Model):
     """Mozillians tracking groups."""
     name = models.CharField(max_length=100)
@@ -28,6 +72,9 @@ class MozillianProfile(models.Model):
     avatar_url = models.URLField(max_length=400, default='')
     bio = models.TextField(blank=True, default='')
     username = models.CharField(max_length=100, default='')
+    application = models.ForeignKey(Application, blank=True, null=True,
+                                    on_delete=models.SET_NULL,
+                                    related_name='applications')
 
     def __unicode__(self):
         return self.full_name
