@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 from uuslug import uuslug
 
 
+@python_2_unicode_compatible
 class Event(models.Model):
     """Events model.
 
@@ -17,7 +19,11 @@ class Event(models.Model):
             self.slug = uuslug(self.full_name, instance=self)
         super(Event, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
 
+
+@python_2_unicode_compatible
 class Application(models.Model):
     """Aplication model for Mozillians."""
     entry_id = models.IntegerField(default=0)
@@ -40,25 +46,34 @@ class Application(models.Model):
     date = models.DateTimeField(null=True, blank=True)
     apllication_complete = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.entry_id
 
+
+@python_2_unicode_compatible
 class PreferredEvent(models.Model):
     event = models.ForeignKey(Event)
     application = models.ForeignKey(Application)
     preferred = models.BooleanField(default=False)
     reason = models.TextField(blank=True, default='')
 
+    def __str__(self):
+        return self.event.name
 
+
+@python_2_unicode_compatible
 class MozillianGroup(models.Model):
     """Mozillians tracking groups."""
     name = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
 
 
+@python_2_unicode_compatible
 class MozillianProfile(models.Model):
     """Mozillians User Profile"""
     slug = models.SlugField(blank=True, max_length=100)
@@ -76,7 +91,7 @@ class MozillianProfile(models.Model):
                                     on_delete=models.SET_NULL,
                                     related_name='applications')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.full_name
 
     class Meta:
