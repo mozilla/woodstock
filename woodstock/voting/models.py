@@ -86,7 +86,7 @@ class MozillianProfile(models.Model):
         MozillianGroup, related_name='mozillians_tracking')
     avatar_url = models.URLField(max_length=400, default='')
     bio = models.TextField(blank=True, default='')
-    username = models.CharField(max_length=100, default='')
+    mozillian_username = models.CharField(max_length=100, default='')
     application = models.ForeignKey(Application, blank=True, null=True,
                                     on_delete=models.SET_NULL,
                                     related_name='applications')

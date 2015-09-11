@@ -76,7 +76,7 @@ class Command(BaseCommand):
             mozillian = MozillianProfile(
                 full_name=user['full_name'],
                 email=user['email'],
-                username=user['username'],
+                mozillian_username=user['username'],
                 city=user['city'],
                 country=(data.COUNTRIES
                          .get(user['country'].upper(), '').capitalize()),

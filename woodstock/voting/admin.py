@@ -41,8 +41,8 @@ class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
     resource_class = MozillianGroupResouce
     model = MozillianProfile
     search_fields = ['full_name', 'country']
-    list_display = ['username', 'full_name', 'email', 'city', 'country',
-                    'negative', 'skip', 'positive', 'stellar']
+    list_display = ['mozillian_username', 'full_name', 'email', 'city',
+                    'country', 'negative', 'skip', 'positive', 'stellar']
 
     def negative(self, obj):
         return obj.votes.filter(vote=-1).count()
