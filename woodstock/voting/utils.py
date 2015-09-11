@@ -21,7 +21,7 @@ def update_mozillian_profiles():
             'limit': 200}
 
     for mozillian in mozillians:
-        data['username'] = mozillian.username
+        data['mozillian_username'] = mozillian.username
 
         url = MOZILLIANS_API_URL + '?' + urllib.urlencode(data)
         resp = requests.get(url)
