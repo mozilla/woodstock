@@ -26,3 +26,9 @@ tablib==0.10.0
 diff-match-patch==20121119
 # sha256: as-au751fvddwuzZ2RunSVR5Qauv--af8ghqnjfUkEw
 psycopg2==2.6.1
+# sha256: GclSD80sHoOWHNx92wsN63uToa6nn1buDWxeJAP8qk0
+# sha256: wLZGoH80oy6PZjJqgZzu8PvBwjNW3IRFFgvHaGGw30w
+whitenoise==2.0.3
+# sha256: pRec3pItK04EXuWxHocyPud9NjrkApT8glLyXWoOrwY
+# sha256: i8g1CCiCrZoBLNeQxGABHk2WvzUS2YoE09q75FOToIk
+gunicorn==19.3.0
