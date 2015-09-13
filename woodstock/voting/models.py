@@ -49,7 +49,7 @@ class Application(models.Model):
                                              blank=True)
 
     def __str__(self):
-        return self.entry_id
+        return unicode(self.entry_id)
 
 
 @python_2_unicode_compatible
