@@ -16,7 +16,7 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.slug = uuslug(self.full_name, instance=self)
+            self.slug = uuslug(self.name, instance=self)
         super(Event, self).save(*args, **kwargs)
 
     def __str__(self):
