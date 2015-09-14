@@ -44,7 +44,7 @@ class Application(models.Model):
     commitment_3 = models.TextField(blank=True, default='')
     other = models.TextField(default='', blank=True)
     date = models.DateTimeField(null=True, blank=True)
-    apllication_complete = models.BooleanField(default=False)
+    application_complete = models.BooleanField(default=False)
     recommendation_letter = models.CharField(max_length=255, default='',
                                              blank=True)
 
