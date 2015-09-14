@@ -36,11 +36,15 @@ def get_mozillian_by_username(username):
     return content['objects'][0]
 
 
-def update_mozillian_profiles():
+def update_mozillian_profiles(queryset=None):
     """Sync MozillianProfile objects with mozillians.org"""
 
-    for mozillian in MozillianProfile.objects.all():
+    if not queryset:
+        queryset = MozillianProfile.objects.all()
+
+    for mozillian in queryset:
         data = get_mozillian_by_username(mozillian.mozillian_username)
+
         if not data:
             continue
 
