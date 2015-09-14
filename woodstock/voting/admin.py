@@ -131,7 +131,7 @@ class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
 
     resource_class = MozillianGroupResouce
     model = MozillianProfile
-    search_fields = ['full_name', 'country']
+    search_fields = ('full_name', 'country', 'mozillian_username', 'email',)
     list_display = ['mozillian_username', 'full_name', 'email', 'city',
                     'country', 'negative', 'skip', 'positive', 'stellar']
 
@@ -172,6 +172,7 @@ class MozillianGroupAdmin(ExportMixin, admin.ModelAdmin):
 class ApplicationAdmin(ImportExportMixin, admin.ModelAdmin):
     resource_class = ApplicationResource
     model = Application
+    search_fields = ('entry_id', 'event__name',)
 
 
 class EventAdmin(ImportExportMixin, admin.ModelAdmin):
