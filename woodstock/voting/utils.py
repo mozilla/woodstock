@@ -16,13 +16,13 @@ API_RESULTS_LIMIT = 200
 MOZILLIANS_API_URL = settings.MOZILLIANS_API_URL
 
 
-def get_mozillian_by_username(username):
+def get_mozillian_by_email(email):
     """Helper method to query API."""
     data = {
         'app_name': settings.MOZILLIANS_APP_NAME,
         'app_key': settings.MOZILLIANS_APP_KEY,
         'limit': API_RESULTS_LIMIT,
-        'username': username
+        'email': email
     }
 
     url = MOZILLIANS_API_URL + '?' + urllib.urlencode(data)
@@ -33,7 +33,9 @@ def get_mozillian_by_username(username):
         return None
 
     content = resp.json()
-    return content['objects'][0]
+    if content['objects']:
+        return content['objects'][0]
+    return content['objects']
 
 
 def update_mozillian_profiles(queryset=None):
@@ -43,26 +45,34 @@ def update_mozillian_profiles(queryset=None):
         queryset = MozillianProfile.objects.all()
 
     for mozillian in queryset:
-        data = get_mozillian_by_username(mozillian.mozillian_username)
+        data = get_mozillian_by_email(mozillian.email)
 
         if not data:
             continue
 
-        country = COUNTRIES.get(data['country'].upper(), '').capitalize()
-        mozillian.full_name = data['full_name']
+        if 'country' in data:
+            mozillian.country = COUNTRIES.get(data['country'].upper(), '').capitalize()
+        if 'full_name' in data:
+            mozillian.full_name = data['full_name']
+        else:
+            mozillian.full_name = 'Private Mozillian'
         mozillian.email = data['email']
-        mozillian.city = data['city']
-        mozillian.country = country
-        mozillian.ircname = data['ircname']
-        mozillian.avatar_url = data['photo']
-        mozillian.bio = data['bio']
+        if 'city' in data:
+            mozillian.city = data['city']
+        if 'ircname'  in data:
+            mozillian.ircname = data['ircname']
+        if 'photo' in data:
+            mozillian.avatar_url = data['photo']
+        if 'bio' in data:
+            mozillian.bio = data['bio']
         mozillian.save()
 
         mozillian.tracking_groups.clear()
         groups = []
-        for group in data['groups']:
-            obj, created = MozillianGroup.objects.get_or_create(name=group)
-            groups.append(obj)
+        if 'groups' in data:
+            for group in data['groups']:
+                obj, created = MozillianGroup.objects.get_or_create(name=group)
+                groups.append(obj)
 
         mozillian.tracking_groups = groups
         logger.debug('Mozillian succesfully updated.')
