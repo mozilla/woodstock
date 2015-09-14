@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django_browserid.http import JSONResponse
 from django_browserid.views import Verify
 
-from models import MozillianProfile, Vote, Event
+from models import Application, MozillianProfile, Vote, Event
 
 import forms
 
@@ -44,11 +44,17 @@ def events(request):
 
 @login_required
 def dashboard(request):
+    # Parse blind/event values
+    blind = bool(int(request.GET.get('blind', u'1')))
+    event_param = request.GET.get('events', u'1,2,3')
+    event_ids = map(lambda x: int(x), event_param.split(','))
+
     user = request.user
-    mozillians = MozillianProfile.objects.all()
+    applications = Application.objects.filter(event__id__in=event_ids)
+    mozillians = MozillianProfile.objects.filter(application__in=applications)
     mozillians_count = mozillians.count()
     status = {}
-    votes = Vote.objects.filter(voter=user)
+    votes = Vote.objects.filter(voter=user, nominee__in=mozillians)
     votes_count = votes.count()
 
     if mozillians_count == 0:
@@ -68,10 +74,14 @@ def dashboard(request):
         status['positive'] = _get_percentage(votes.filter(vote=1).count(),
                                              mozillians_count)
 
-    return render(request, 'dashboard.html',
-                  {'user': user,
-                   'status': status,
-                   'mozillians': mozillians})
+    ctx = {
+        'user': user,
+        'status': status,
+        'mozillians': mozillians,
+        'blind': blind,
+        'event_ids': event_ids
+    }
+    return render(request, 'dashboard.html', ctx)
 
 
 @login_required
