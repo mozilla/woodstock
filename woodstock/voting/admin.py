@@ -9,9 +9,27 @@ from import_export import fields, resources
 
 from woodstock.voting.models import (Application, Event, PreferredEvent,
                                      MozillianGroup, MozillianProfile, Vote)
+from woodstock.voting.utils import get_object_or_none
 
 
 RGX = re.compile('.+/u/(.+)/')
+
+
+def get_mozillian_username(row):
+    """Check if there is a mozillian username in each row."""
+
+    username = ''
+    if ('mozillian_username' not in row or
+        'application_complete' not in row or
+            row['application_complete'] == u'0'):
+        return username
+
+    # Normalize usernames
+    username = row['mozillian_username']
+    match = RGX.match(row['mozillian_username'])
+    if match:
+        username = match.groups()[0]
+    return username
 
 
 class ApplicationResource(resources.ModelResource):
@@ -19,13 +37,68 @@ class ApplicationResource(resources.ModelResource):
     class Meta:
         model = Application
         fields = ('entry_id', 'number_of_events', 'event', 'reasoning',
-                  'contributions', 'learning_areas', 'recommendation_letter',
-                  'ideas', 'commitments', 'functional_team', 'team_contact',
-                  'participation_opportunities', 'tracking_communities',
-                  'community_record', 'community_impact', 'other', 'date',
-                  'application_complete',)
-        skip_unchanged = True
+                  'impact', 'learning_areas', 'ideas', 'commitment_1',
+                  'functional_team', 'team_contact',
+                  'participation_opportunities', 'commitment_2',
+                  'community', 'track_record', 'community_impact',
+                  'commitment_3', 'other', 'application_complete', 'date',
+                  'recommendation_letter',)
+        import_id_fields = ('entry_id',)
         report_skipped = True
+
+    # Import section
+    def before_import(self, dataset, dry_run, **kwargs):
+        """Override method for custom functionality."""
+
+        # Normalize dataset
+        if dataset.headers:
+            dataset.headers = [unicode(header).lower().strip()
+                               for header in dataset.headers]
+
+    def get_or_init_instance(self, instance_loader, row):
+        """Override method for custom functionality."""
+
+        # If there isn't a username or the application is not complete,
+        # do not return an instance.
+        row['mozillian_username'] = get_mozillian_username(row)
+        profile = get_object_or_none(
+            MozillianProfile, mozillian_username=row['mozillian_username'])
+        # If there is no profile force a skip
+        if not profile:
+            row['mozillian_username'] = ''
+
+        # Normalize Dataset to db related fields
+        event_headers = [e for e in row if 'event_' in e]
+        events = [name for name in event_headers if row[name]]
+        row['number_of_events'] = unicode(len(events))
+
+        return (super(ApplicationResource, self)
+                .get_or_init_instance(instance_loader, row))
+
+    def save_instance(self, instance, dry_run):
+        if not dry_run:
+            super(ApplicationResource, self).save_instance(instance, dry_run)
+
+    def save_m2m(self, obj, data, dry_run):
+        """Override save_m2m for custom functionality."""
+        event_headers = [e for e in data if 'event_' in e]
+        events = [name for name in event_headers if data[name]]
+
+        for event_name in events:
+            for event in Event.objects.all():
+                if event.name in data[event_name]:
+                    preferred = False
+                    if event.name in data['preferred']:
+                        preferred = True
+                    if not PreferredEvent.objects.filter(
+                            event=event, application=obj).exists():
+                        PreferredEvent.objects.create(event=event,
+                                                      application=obj,
+                                                      preferred=preferred)
+                    break
+                continue
+
+        super(ApplicationResource, self).save_m2m(obj, data, dry_run)
 
 
 class EventResource(resources.ModelResource):
@@ -58,7 +131,7 @@ class MozillianGroupResouce(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
         import_id_fields = ('mozillian_username',)
-        fields = ('mozillian_username', 'email',)
+        fields = ('mozillian_username', 'email', 'application',)
 
     def dehydrate_negative_votes(self, mozillianprofile):
         return mozillianprofile.votes.filter(vote=-1).count()
@@ -90,17 +163,9 @@ class MozillianGroupResouce(resources.ModelResource):
     def get_or_init_instance(self, instance_loader, row):
         """Override method for custom functionality."""
 
-        # If ther isn't a username or the application is not complete,
+        # If there isn't a username or the application is not complete,
         # do not return an instance.
-        if ('mozillian_username' not in row or
-            'application_complete' not in row or
-                row['application_complete'] == u'0'):
-            row['mozillian_username'] = ''
-
-        # Normalize usernames
-        match = RGX.match(row['mozillian_username'])
-        if match:
-            row['mozillian_username'] = match.groups()[0]
+        row['mozillian_username'] = get_mozillian_username(row)
 
         # Validate email
         email_validator = EmailValidator()
@@ -109,8 +174,12 @@ class MozillianGroupResouce(resources.ModelResource):
         except ValidationError:
             row['email'] = ''
 
-        return (super(MozillianGroupResouce, self)
-                .get_or_init_instance(instance_loader, row))
+        instance, created = (super(MozillianGroupResouce, self)
+                             .get_or_init_instance(instance_loader, row))
+        entry_id = row['entry_id']
+        application, _ = Application.objects.get_or_create(entry_id=entry_id)
+        instance.application = application
+        return (instance, created)
 
     def skip_row(self, instance, original):
         if instance and (instance.mozillian_username == '' or
@@ -120,10 +189,10 @@ class MozillianGroupResouce(resources.ModelResource):
 
     def save_instance(self, instance, dry_run):
         if not dry_run:
-            # TODO: Get the rest of the info from mozillians.org
-            # Probably we need to check if there are any changes to the profile
-            # and update it
-            super(MozillianGroupResouce, self).save_instance(instance, dry_run)
+            if not MozillianProfile.objects.filter(
+                    mozillian_username=instance.mozillian_username).exists():
+                super(MozillianGroupResouce, self).save_instance(instance,
+                                                                 dry_run)
 
 
 class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):

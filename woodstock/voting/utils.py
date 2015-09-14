@@ -51,3 +51,14 @@ def update_mozillian_profiles():
 
         mozillian.tracking_groups = groups
         logger.debug('Mozillian succesfully updated.')
+
+
+def get_object_or_none(model_class, **kwargs):
+    """Identical to get_object_or_404, except instead of returning Http404,
+    this returns None.
+
+    """
+    try:
+        return model_class.objects.get(**kwargs)
+    except (model_class.DoesNotExist, model_class.MultipleObjectsReturned):
+        return None
