@@ -94,7 +94,7 @@ class MozillianProfile(models.Model):
                                     related_name='applications')
 
     def __str__(self):
-        return self.full_name
+        return self.slug
 
     class Meta:
         ordering = ['country', 'full_name']

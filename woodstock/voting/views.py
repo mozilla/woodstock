@@ -45,7 +45,7 @@ def events(request):
 @login_required
 def dashboard(request):
     # Parse blind/event values
-    blind = bool(int(request.GET.get('blind', u'1')))
+    blind = int(request.GET.get('blind', u'1'))
     event_param = request.GET.get('events', u'1,2,3')
     event_ids = map(lambda x: int(x), event_param.split(','))
 
@@ -89,7 +89,7 @@ def view_voting(request, slug):
     """View voting and cast a vote view."""
 
     # Parse blind/event values
-    blind = bool(int(request.GET.get('blind', u'1')))
+    blind = int(request.GET.get('blind', u'1'))
     event_param = request.GET.get('events', u'1,2,3')
     event_ids = map(lambda x: int(x), event_param.split(','))
     applications = Application.objects.filter(event__id__in=event_ids)
