@@ -44,6 +44,11 @@ h1, h2, h3, h4, h5, p, span, div {
   margin-bottom: 10px;
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+    margin: 0px;
+}
+
 #reclama {
   text-align: center;
   color: #999 !important;
@@ -170,4 +175,21 @@ table.tablesorter thead tr .headerSortDown {
 
 .btn.disabled {
   opacity: 0.25 !important;
+}
+
+.events-section {
+  margin-top: 20px;
+}
+
+.events-notice {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#blind-info {
+    vertical-align: baseline;
+}
+
+.messages {
+    margin-top: 15px;
 }

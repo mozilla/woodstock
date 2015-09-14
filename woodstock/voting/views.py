@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
+from django.core.urlresolvers import reverse
 
 from django_browserid.http import JSONResponse
 from django_browserid.views import Verify
 
-from models import MozillianProfile, Vote
+from models import MozillianProfile, Vote, Event
 
 import forms
 
@@ -23,13 +24,22 @@ class BrowserIDVerify(Verify):
 def main(request):
     """Main page view."""
     if request.user.is_authenticated():
-        return redirect(dashboard)
+        return redirect(reverse('voting_events'))
     return render(request, 'index.html')
 
 
 def _get_percentage(partial, total):
     """Get the percentage."""
     return int(round(100*float(partial)/float(total)))
+
+
+@login_required
+def events(request):
+    user = request.user
+    events = Event.objects.all()
+
+    return render(request, 'events.html',
+                  {'user': user, 'events': events})
 
 
 @login_required

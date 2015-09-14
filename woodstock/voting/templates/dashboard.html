@@ -1,55 +1,11 @@
-{% load helpers %}
-{% load browserid %}
+{% extends "base.html" %}
 {% load helpers %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Grow Tunisia 2014 Voting</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
-    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+{% block title %} - Dashboard{% endblock %}
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-  </head>
-
-  <body>
-    {% browserid_info %}
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <span class="brand" id="site-title">Grow Tunisia 2014 Voting</span>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active">
-                <a href="{% url 'voting_dashboard' %}">Dashboard</a>
-              </li>
-              <li>
-                {% browserid_logout text='Logout' %}
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
+{% block main %}
+  <div class="container-fluid">
 
     <div class="row-fluid">
       <div class="span3 offset1 visible-desktop">
@@ -125,15 +81,5 @@
       </div>
     </div>
 
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
-    {% browserid_js %}
-    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/dashboard.js' %}"></script>
-  </body>
-</html>
+  </div> <!-- /container -->
+{% endblock %}

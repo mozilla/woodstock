@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     # BrowserId
     url(r'', include('django_browserid.urls')),
     # Voting urls
-    url(r'^dashboard/', include('woodstock.voting.voting_urls')),
+    url(r'', include('woodstock.voting.voting_urls')),
     url(r'^v/', include('woodstock.voting.v_urls')),
     # Admin:
     url(r'^admin/', include(admin.site.urls)),
