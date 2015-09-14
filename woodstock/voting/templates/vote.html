@@ -12,7 +12,7 @@
         <ul class="pager">
           {% if previous_entry %}
             <li class="previous">
-              <a href="{% url 'voting_view_voting' slug=previous_entry.slug %}">
+              <a href="{% url 'voting_view_voting' id=previous_entry.id %}?blind={{ blind }}">
                 &larr; <span class="block visible-desktop">Previous</span>
               </a>
             </li>
@@ -28,7 +28,7 @@
           </li>
           {% if next_entry %}
             <li class="next">
-              <a href="{% url 'voting_view_voting' slug=next_entry %}">
+              <a href="{% url 'voting_view_voting' id=next_entry.id %}?blind={{ blind }}">
                 <span class="block visible-desktop">Next</span> &rarr;
               </a>
             </li>

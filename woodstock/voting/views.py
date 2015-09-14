@@ -112,7 +112,10 @@ def view_voting(request, id):
     if vote_form.is_valid():
         vote_form.save()
         if next_entry:
-            return redirect('voting_view_voting', id=next_entry.id)
+            next_url = '{0}?blind={1}'.format(reverse('voting_view_voting',
+                                                      kwargs={'id': next_entry.id}),
+                                              blind)
+            return redirect(next_url)
         return redirect(dashboard)
 
     ctx = {
