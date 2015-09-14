@@ -286,7 +286,14 @@
                 <span class="question">Recommendation Letter</span>
               </div>
               <div class="span9 offset1">
-                <p>{{ mozillian.application.recommendation_letter|default:"-" }}</p>
+                {% if mozillian.application.recommendation_letter %}
+                <p>
+                  <a href="{{ mozillian.application.recommendation_letter }}" target="_blank">View recommendation</a>
+                  {% if blind %}(you may see identifiable information){% endif %}
+                </p>
+                {% else %}
+                  -
+                {% endif %}
               </div>
             </div>
           </div>
