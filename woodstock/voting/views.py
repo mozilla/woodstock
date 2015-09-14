@@ -87,6 +87,14 @@ def dashboard(request):
 @login_required
 def view_voting(request, slug):
     """View voting and cast a vote view."""
+
+    # Parse blind/event values
+    blind = bool(int(request.GET.get('blind', u'1')))
+    event_param = request.GET.get('events', u'1,2,3')
+    event_ids = map(lambda x: int(x), event_param.split(','))
+    applications = Application.objects.filter(event__id__in=event_ids)
+    mozillian_qs = MozillianProfile.objects.filter(application__in=applications)
+
     mozillian = get_object_or_404(MozillianProfile, slug=slug)
     if mozillian.votes.filter(voter=request.user).exists():
         instance = mozillian.votes.get(voter=request.user)
@@ -98,13 +106,21 @@ def view_voting(request, slug):
                                instance=instance,
                                initial={'vote': extra})
     # Check POST data and save form
+    next_entry = mozillian.get_next_entry(mozillian_qs) or None
+    previous_entry = mozillian.get_previous_entry(mozillian_qs) or None
+
     if vote_form.is_valid():
         vote_form.save()
-        next_entry = mozillian.get_next_entry()
         if next_entry:
             return redirect('voting_view_voting', slug=next_entry.slug)
         return redirect(dashboard)
 
-    return render(request, 'vote.html',
-                  {'mozillian': mozillian,
-                   'vote_form': vote_form})
+    ctx = {
+        'mozillian': mozillian,
+        'vote_form': vote_form,
+        'next_entry': next_entry,
+        'previous_entry': previous_entry,
+        'blind': blind,
+        'event_ids': event_ids
+    }
+    return render(request, 'vote.html', ctx)

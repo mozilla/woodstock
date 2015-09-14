@@ -10,9 +10,9 @@
     <div class="row">
       <div class="span12">
         <ul class="pager">
-          {% if mozillian.get_previous_entry %}
+          {% if previous_entry %}
             <li class="previous">
-              <a href="{% url 'voting_view_voting' slug=mozillian.get_previous_entry.slug %}">
+              <a href="{% url 'voting_view_voting' slug=previous_entry.slug %}">
                 &larr; <span class="block visible-desktop">Previous</span>
               </a>
             </li>
@@ -20,9 +20,9 @@
           <li>
             <div id="vote-title">Vote for {{ mozillian.full_name }}</div>
           </li>
-          {% if mozillian.get_next_entry %}
+          {% if next_entry %}
             <li class="next">
-              <a href="{% url 'voting_view_voting' slug=mozillian.get_next_entry.slug %}">
+              <a href="{% url 'voting_view_voting' slug=next_entry %}">
                 <span class="block visible-desktop">Next</span> &rarr;
               </a>
             </li>
