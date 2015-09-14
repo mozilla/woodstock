@@ -8,7 +8,7 @@ CMD ["./bin/run-docker.sh"]
 RUN adduser --uid 1000 --disabled-password --gecos '' --no-create-home webdev
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential python-dev libpq-dev gettext libjpeg62-turbo-dev postgresql-client sharutils libjpeg62-turbo gunicorn
+    apt-get install -y --no-install-recommends build-essential python-dev libpq-dev gettext libjpeg62-turbo-dev postgresql-client sharutils libjpeg62-turbo
 
 # Pin a known to work with peep pip version.
 RUN pip install --no-cache-dir pip==6.0.0
