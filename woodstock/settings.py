@@ -114,7 +114,9 @@ BROWSERID_AUDIENCES = config('BROWSERID_AUDIENCES', cast=Csv())
 BROWSERID_VERIFY_CLASS = 'woodstock.voting.views.BrowserIDVerify'
 
 # Path to redirect to on successful login.
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/events/'
+
 # Path to redirect to on unsuccessful login attempt.
 LOGIN_REDIRECT_URL_FAILURE = '/'
 LOGOUT_REDIRECT_URL = '/'
