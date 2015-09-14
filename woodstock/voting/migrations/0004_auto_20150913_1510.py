@@ -6,9 +6,9 @@ from django.db import models, migrations
 from uuslug import uuslug
 
 
-EVENTS = ['MozFest 2015',
-          'All Hands 2015',
-          'Leadership Summit 2016']
+EVENTS = ['MozFest',
+          'All Hands',
+          'Leadership Summit']
 
 
 def add_events(apps, schema_editor):
