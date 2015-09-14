@@ -1,5 +1,3 @@
-/*global $, jQuery, document*/
-
 function check_submit(v) {
     "use strict";
     $('input').removeAttr('checked');
@@ -37,4 +35,6 @@ $(document).ready(function () {
             check_submit("2");
         }
     });
+
+    $('.preferred').tooltip();
 });

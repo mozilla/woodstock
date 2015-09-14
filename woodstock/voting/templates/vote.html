@@ -10,19 +10,25 @@
     <div class="row">
       <div class="span12">
         <ul class="pager">
-          {% if mozillian.get_previous_entry %}
+          {% if previous_entry %}
             <li class="previous">
-              <a href="{% url 'voting_view_voting' slug=mozillian.get_previous_entry.slug %}">
+              <a href="{% url 'voting_view_voting' slug=previous_entry.slug %}">
                 &larr; <span class="block visible-desktop">Previous</span>
               </a>
             </li>
           {% endif %}
           <li>
-            <div id="vote-title">Vote for {{ mozillian.full_name }}</div>
+            <div id="vote-title">
+              {% if blind %}
+                Vote
+              {% else %}
+                Vote for {{ mozillian.full_name }}
+              {% endif %}
+            </div>
           </li>
-          {% if mozillian.get_next_entry %}
+          {% if next_entry %}
             <li class="next">
-              <a href="{% url 'voting_view_voting' slug=mozillian.get_next_entry.slug %}">
+              <a href="{% url 'voting_view_voting' slug=next_entry %}">
                 <span class="block visible-desktop">Next</span> &rarr;
               </a>
             </li>
@@ -35,80 +41,252 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <div id="sidebar" class="span2">
-          {% if mozillian.avatar_url %}
-            <img class="img-circle avatar" src="{{ mozillian.avatar_url }}" />
+          {% if blind %}
+            <img class="img-circle avatar" src="{% static 'img/default_avatar.png' %}" />
           {% else %}
-            <img class="img-circle avatar" src="{% static 'img/shy.png' %}" />
+            {% if mozillian.avatar_url %}
+              <img class="img-circle avatar" src="{{ mozillian.avatar_url }}" />
+            {% else %}
+              <img class="img-circle avatar" src="{% static 'img/shy.png' %}" />
+            {% endif %}
+            <a href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
+               target="_blank"
+               class="btn btn-small visible-desktop">
+              Mozillians Profile
+            </a>
+            <a href="https://bugzilla.mozilla.org/page.cgi?id=user_activity.html&action=run&who={{ mozillian.email }}"
+               target="_blank"
+               class="btn btn-small visible-desktop">
+              Bugzilla Activity
+            </a>
           {% endif %}
-          <a href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
-             target="_blank"
-             class="btn btn-small visible-desktop">
-            Mozillians Profile
-          </a>
-          <a href="https://bugzilla.mozilla.org/page.cgi?id=user_activity.html&action=run&who={{ mozillian.email }}"
-             target="_blank"
-             class="btn btn-small visible-desktop">
-            Bugzilla Activity
-          </a>
         </div>
         <div class="span10">
           <div class="container-fluid">
-            <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">Name</span>
+            {% if blind %}
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Name</span>
+                </div>
+                <div class="span10">
+                  <strong>Awesome Mozillian</strong>
+                </div>
               </div>
-              <div class="span10">
-                <strong>{{ mozillian.full_name }}</strong>
+            {% else %}
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Name</span>
+                </div>
+                <div class="span10">
+                  <strong>{{ mozillian.full_name }}</strong>
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Email</span>
+                </div>
+                <div class="span10">
+                  {{ mozillian.email }}
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">City</span>
+                </div>
+                <div class="span10">
+                  {{ mozillian.city }}
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Country</span>
+                </div>
+                <div class="span10">
+                  {{ mozillian.country }}
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">IRC Nick</span>
+                </div>
+                <div class="span10">
+                  {{ mozillian.ircname }}
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Groups</span>
+                </div>
+                <div class="span10 groups">
+                  {% for group in mozillian.tracking_groups.all %}
+                    <span class="badge">{{ group.name }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <span class="label label-info">Bio</span>
+                </div>
+                <div class="span10">
+                  <p>{{ mozillian.bio }}</p>
+                </div>
+              </div>
+            {% endif %}
+
+            <hr>
+
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">No of events</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.number_of_events }}</p>
               </div>
             </div>
             <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">Email</span>
+              <div class="span9 offset1">
+                <span class="question">Events</span>
               </div>
-              <div class="span10">
-                {{ mozillian.email }}
-              </div>
-            </div>
-            <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">City</span>
-              </div>
-              <div class="span10">
-                {{ mozillian.city }}
-              </div>
-            </div>
-            <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">Country</span>
-              </div>
-              <div class="span10">
-                {{ mozillian.country }}
+              <div class="span9 offset1">
+                <ul>
+                  {% for event in mozillian.application.preferredevent_set.all %}
+                    <li class="events-list">
+                      {{ event.event.name }}
+                      {% if event.preferred %}
+                        <i class="icon-star preferred" title="Preferred"></i>
+                        <br> {{ event.reason}}
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
             </div>
             <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">IRC Nick</span>
+              <div class="span9 offset1">
+                <span class="question">Why do you want to join?</span>
               </div>
-              <div class="span10">
-                {{ mozillian.ircname }}
-              </div>
-            </div>
-            <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">Groups</span>
-              </div>
-              <div class="span10 groups">
-                {% for group in mozillian.tracking_groups.all %}
-                  <span class="badge">{{ group.name }}</span>
-                {% endfor %}
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.reasoning }}</p>
               </div>
             </div>
             <div class="row-fluid">
-              <div class="span2">
-                <span class="label label-info">Bio</span>
+              <div class="span9 offset1">
+                <span class="question">Impact last 6-12 months</span>
               </div>
-              <div class="span10">
-                <p>{{ mozillian.bio }}</p>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.impact }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">In what areas you want to learn?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.learning_areas|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Ideas for leadership growth?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.ideas|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Commitment for 1st half of 2016 #1</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.commitment_1|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Functional team associated?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.functional_team|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Team contact?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.team_contact|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Ideas for participation opportunity?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.participation_opportunities|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Commitment for 1st half of 2016 #2</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.commitment_2|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Community associated?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.community|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Track record in community?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.track_record|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Impact in community?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.community_impact|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Commitment for 1st half of 2016 #3</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.commitment_3|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Other comments?</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.other|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Date submitted</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.date|date:"SHORT_DATE_FORMAT"|default:"-" }}</p>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span9 offset1">
+                <span class="question">Recommendation Letter</span>
+              </div>
+              <div class="span9 offset1">
+                <p>{{ mozillian.application.recommendation_letter|default:"-" }}</p>
               </div>
             </div>
           </div>

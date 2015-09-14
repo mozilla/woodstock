@@ -182,14 +182,22 @@ table.tablesorter thead tr .headerSortDown {
 }
 
 .events-notice {
-    margin-bottom: 10px;
-    font-size: 1.2em;
+  margin-bottom: 10px;
+  font-size: 1.2em;
 }
 
 #blind-info {
-    vertical-align: baseline;
+  vertical-align: baseline;
 }
 
 .messages {
-    margin-top: 15px;
+  margin-top: 15px;
+}
+
+.question {
+  font-weight: bold;
+}
+
+.events-list {
+  margin-bottom: 5px;
 }

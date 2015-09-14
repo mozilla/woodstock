@@ -66,12 +66,18 @@
             {% for mozillian in mozillians %}
               <tr>
                 <td>
-                  <a href="{% url 'voting_view_voting' slug=mozillian.slug %}">
-                    {{ mozillian.full_name }}
+                  <a href="{% url 'voting_view_voting' slug=mozillian.slug %}?blind={{ blind }}">
+                    {% if blind %}
+                      Awesome Mozillian
+                    {% else %}
+                      {{ mozillian.full_name }}
+                    {% endif %}
                   </a>
                 </td>
                 <td>
-                  {{ mozillian.country }}
+                  {% if not blind %}
+                    {{ mozillian.country }}
+                  {% endif %}
                 </td>
                 <td>{{ mozillian|get_vote:user }}</td>
               </tr>
