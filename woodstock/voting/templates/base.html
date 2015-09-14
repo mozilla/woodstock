@@ -1,0 +1,63 @@
+{% load staticfiles %}
+{% load browserid %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mozilla Voting App{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+    {% block css %}{% endblock %}
+
+  </head>
+
+  <body {% block body-id %}{% endblock %}>
+    {% browserid_info %}
+
+    {% block nav %}
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <span class="brand" id="site-title">Mozilla Voting App</span>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="active">
+                  <a href="{% url 'voting_events' %}">Events</a>
+                </li>
+                <li>
+                  {% browserid_logout text='Logout' %}
+                </li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+
+    {% block main %}{% endblock %}
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    {% browserid_js %}
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    {% block js %}{% endblock %}
+  </body>
+</html>

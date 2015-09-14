@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load helpers %}
+{% load staticfiles %}
+
+{% block title %} - Events{% endblock %}
+
+{% block main %}
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+      <div class="span11 offset1">
+        <h2>Events</h2>
+      </div>
+      <div class="span5 offset1 events-section">
+        <div class="events-notice">
+          Select available events
+        </div>
+        {% for event in events %}
+          <div class="event">
+            <input type="checkbox" name="event" value="{{ event.pk }}" checked> {{ event.name}}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="span5 events-section">
+        <div class="events-notice">
+          Select voting method
+          <i class="icon-question-sign" id="blind-info"
+             title="Blind means you won't see contributo's name"></i>
+        </div>
+        <div>
+          <input type="radio" name="blind" value="1" checked> Blind
+        </div>
+        <div>
+          <input type="radio" name="blind" value="0"> Non Blind
+        </div>
+      </div>
+
+      <div class="span7 text-right events-section">
+        <a href="#" type="submit" class="btn btn-primary disabled" id="events-submit">Submit</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'js/events.js' %}"></script>
+{% endblock %}

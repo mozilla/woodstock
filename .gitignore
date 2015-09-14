@@ -3,3 +3,4 @@ woodstock-db
 local_settings.py
 /static
 .env
+*.sqlite3
