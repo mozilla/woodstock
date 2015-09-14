@@ -56,6 +56,15 @@
                  class="btn btn-small visible-desktop">
                 Mozillians Profile
             </a>
+            {% if mozillian.reps_display_name %}
+              <a href="https://reps.mozilla.org/u/{{ mozillian.reps_display_name }}"
+                target="_blank"
+                class="btn btn-small visible-desktop">
+                Reps Profile
+              </a>
+            {% else %}
+              No Reps profile found!
+            {% endif %}
             <a href="https://bugzilla.mozilla.org/page.cgi?id=user_activity.html&action=run&who={{ mozillian.email }}"
                target="_blank"
                class="btn btn-small visible-desktop">

@@ -92,6 +92,7 @@ class MozillianProfile(models.Model):
     application = models.ForeignKey(Application, blank=True, null=True,
                                     on_delete=models.SET_NULL,
                                     related_name='applications')
+    reps_display_name = models.CharField(max_length=255, default='')
 
     def __str__(self):
         return unicode(self.id)
