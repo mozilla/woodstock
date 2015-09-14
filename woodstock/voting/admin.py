@@ -13,7 +13,8 @@ from woodstock.voting.models import (Application, Event, PreferredEvent,
 from woodstock.voting.utils import get_object_or_none, update_mozillian_profiles
 
 
-RGX = re.compile('.+/u/(.+)?/')
+USERNAME_RGX = re.compile('.+/u/(.+)(/)?')
+UPLOAD_PATH_RGX = re.compile('.+\((.+)\)')
 
 
 def get_mozillian_username(row):
@@ -27,9 +28,9 @@ def get_mozillian_username(row):
 
     # Normalize usernames
     username = row['mozillian_username']
-    match = RGX.match(row['mozillian_username'])
+    match = USERNAME_RGX.match(row['mozillian_username'])
     if match:
-        username = match.groups()[0]
+        username = match.groups()[0].strip('/')
     return username
 
 
@@ -72,6 +73,9 @@ class ApplicationResource(resources.ModelResource):
         event_headers = [e for e in row if 'event_' in e]
         events = [name for name in event_headers if row[name]]
         row['number_of_events'] = unicode(len(events))
+        path_match = UPLOAD_PATH_RGX.match(row['recommendation_letter'])
+        if path_match:
+            row['recommendation_letter'] = path_match.groups()[0]
 
         return (super(ApplicationResource, self)
                 .get_or_init_instance(instance_loader, row))
