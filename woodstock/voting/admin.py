@@ -165,29 +165,29 @@ class VoteAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ['voter', 'nominee', 'vote']
 
 
+class PreferredEventInline(ExportMixin, admin.TabularInline):
+    resource_class = PreferredEventResource
+    model = PreferredEvent
+
+
+class EventInline(ExportMixin, admin.TabularInline):
+    inlines = (PreferredEventInline,)
+    resource_class = EventResource
+    model = Application.event.through
+
+
 class MozillianGroupAdmin(ExportMixin, admin.ModelAdmin):
     model = MozillianGroup
 
 
 class ApplicationAdmin(ImportExportMixin, admin.ModelAdmin):
+    inlines = (EventInline,)
     resource_class = ApplicationResource
     model = Application
     search_fields = ('entry_id', 'event__name',)
-
-
-class EventAdmin(ImportExportMixin, admin.ModelAdmin):
-    resource_class = EventResource
-    model = Event
-
-
-class PreferredEventAdmin(ImportExportMixin, admin.ModelAdmin):
-    resource_class = PreferredEventResource
-    model = PreferredEvent
 
 
 admin.site.register(MozillianGroup, MozillianGroupAdmin)
 admin.site.register(Vote, VoteAdmin)
 admin.site.register(MozillianProfile, MozillianProfileAdmin)
 admin.site.register(Application, ApplicationAdmin)
-admin.site.register(Event, EventAdmin)
-admin.site.register(PreferredEvent, PreferredEventAdmin)

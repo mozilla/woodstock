@@ -49,7 +49,7 @@ class Application(models.Model):
                                              blank=True)
 
     def __str__(self):
-        return self.entry_id
+        return unicode(self.entry_id)
 
 
 @python_2_unicode_compatible
@@ -60,7 +60,7 @@ class PreferredEvent(models.Model):
     reason = models.TextField(blank=True, default='')
 
     def __str__(self):
-        return self.event.name
+        return u'{0} {1}'.format(self.event, self.application)
 
 
 @python_2_unicode_compatible
