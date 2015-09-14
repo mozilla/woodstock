@@ -9,7 +9,7 @@ from import_export import fields, resources
 
 from woodstock.voting.models import (Application, Event, PreferredEvent,
                                      MozillianGroup, MozillianProfile, Vote)
-from woodstock.voting.utils import get_object_or_none
+from woodstock.voting.utils import get_object_or_none, update_mozillian_profiles
 
 
 RGX = re.compile('.+/u/(.+)/')
@@ -195,12 +195,18 @@ class MozillianGroupResouce(resources.ModelResource):
                                                                  dry_run)
 
 
+def update_profiles(modeladmin, request, queryset):
+    update_mozillian_profiles(queryset)
+update_profiles.short_description = 'Update information in Mozillian profiles.'
+
+
 class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
     """Mozillian profiles under /admin."""
 
     resource_class = MozillianGroupResouce
     model = MozillianProfile
     search_fields = ('full_name', 'country', 'mozillian_username', 'email',)
+    actions = [update_profiles]
     list_display = ['mozillian_username', 'full_name', 'email', 'city',
                     'country', 'negative', 'skip', 'positive', 'stellar']
 

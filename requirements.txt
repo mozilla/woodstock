@@ -32,3 +32,7 @@ whitenoise==2.0.3
 # sha256: pRec3pItK04EXuWxHocyPud9NjrkApT8glLyXWoOrwY
 # sha256: i8g1CCiCrZoBLNeQxGABHk2WvzUS2YoE09q75FOToIk
 gunicorn==19.3.0
+# sha256: Hu5xfdAC8u-IJttvYTsxemYJU3bR6DgkKjOU7dhM8C4
+python-slugify==1.1.3
+# sha256: 8ZFQx03i_mhHsT7-6u5ALyvSwwmkRjRqi1uq4DFdEIo
+Unidecode==0.04.18
