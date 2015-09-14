@@ -6,13 +6,14 @@ from django.forms import ValidationError
 
 from import_export.admin import ExportMixin, ImportExportMixin
 from import_export import fields, resources
+from uuslug import uuslug
 
 from woodstock.voting.models import (Application, Event, PreferredEvent,
                                      MozillianGroup, MozillianProfile, Vote)
 from woodstock.voting.utils import get_object_or_none, update_mozillian_profiles
 
 
-RGX = re.compile('.+/u/(.+)/')
+RGX = re.compile('.+/u/(.+)?/')
 
 
 def get_mozillian_username(row):
@@ -131,7 +132,7 @@ class MozillianGroupResouce(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
         import_id_fields = ('mozillian_username',)
-        fields = ('mozillian_username', 'email', 'application',)
+        fields = ('mozillian_username', 'email', 'application', 'full_name',)
 
     def dehydrate_negative_votes(self, mozillianprofile):
         return mozillianprofile.votes.filter(vote=-1).count()
@@ -173,12 +174,14 @@ class MozillianGroupResouce(resources.ModelResource):
             email_validator(row['email'])
         except ValidationError:
             row['email'] = ''
+        row['full_name'] = row['first_name'] + ' ' + row['last_name']
 
         instance, created = (super(MozillianGroupResouce, self)
                              .get_or_init_instance(instance_loader, row))
         entry_id = row['entry_id']
         application, _ = Application.objects.get_or_create(entry_id=entry_id)
         instance.application = application
+        instance.slug = uuslug(instance.full_name, instance)
         return (instance, created)
 
     def skip_row(self, instance, original):
