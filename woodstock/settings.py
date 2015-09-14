@@ -36,8 +36,7 @@ USE_L10N = config('USE_L10N', default=True, cast=bool)
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = config('USE_TZ', default=True, cast=bool)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-PROJECT_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
