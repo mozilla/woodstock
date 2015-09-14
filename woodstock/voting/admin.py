@@ -254,6 +254,10 @@ class EventInline(ExportMixin, admin.TabularInline):
     model = Application.event.through
 
 
+class EventAdmin(ExportMixin, admin.ModelAdmin):
+    model = Event
+
+
 class MozillianGroupAdmin(ExportMixin, admin.ModelAdmin):
     model = MozillianGroup
 
@@ -267,5 +271,6 @@ class ApplicationAdmin(ImportExportMixin, admin.ModelAdmin):
 
 admin.site.register(MozillianGroup, MozillianGroupAdmin)
 admin.site.register(Vote, VoteAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(MozillianProfile, MozillianProfileAdmin)
 admin.site.register(Application, ApplicationAdmin)
