@@ -66,7 +66,7 @@
             {% for mozillian in mozillians %}
               <tr>
                 <td>
-                  <a href="{% url 'voting_view_voting' id=mozillian.id %}?blind={{ blind }}">
+                  <a href="{% url 'voting_view_voting' id=mozillian.id %}?blind={{ blind }}&events={{ events }}">
                     {% if blind %}
                       Awesome Mozillian
                     {% else %}
