@@ -108,6 +108,10 @@ input[type="radio"] {
   float: right;
 }
 
+.label-inverse {
+  margin: 20px 0px 10px 0px;
+}
+
 @media (max-width: 980px) {
   .label-info {
     float: left;
