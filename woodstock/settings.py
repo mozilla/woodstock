@@ -123,6 +123,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 MOZILLIANS_URL = "https://mozillians.org"
 MOZILLIANS_API_URL = "https://mozillians.org/api/v1/users/"
+REPS_API_URL = "https://reps.mozilla.org/api/v1/rep/"
 
 # Replace with your mozillians API credentials
 MOZILLIANS_APP_KEY = config('MOZILLIANS_APP_KEY', default=None)

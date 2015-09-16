@@ -10,7 +10,9 @@ from uuslug import uuslug
 
 from woodstock.voting.models import (Application, Event, PreferredEvent,
                                      MozillianGroup, MozillianProfile, Vote)
-from woodstock.voting.utils import get_object_or_none, update_mozillian_profiles
+from woodstock.voting.utils import (get_object_or_none,
+                                    update_mozillian_profiles,
+                                    fetch_rep_profiles)
 
 
 USERNAME_RGX = re.compile('.+/u/(.+)(/)?')
@@ -206,15 +208,22 @@ def update_profiles(modeladmin, request, queryset):
 update_profiles.short_description = 'Update information in Mozillian profiles.'
 
 
+def get_rep_profiles(modeladmin, request, queryset):
+    fetch_rep_profiles(queryset)
+get_rep_profiles.short_description = 'Fetch Rep profiles.'
+
+
 class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
     """Mozillian profiles under /admin."""
 
     resource_class = MozillianGroupResouce
     model = MozillianProfile
-    search_fields = ('full_name', 'country', 'mozillian_username', 'email',)
-    actions = [update_profiles]
+    search_fields = ('full_name', 'country', 'mozillian_username', 'email',
+                     'reps_display_name',)
+    actions = [update_profiles, get_rep_profiles]
     list_display = ['mozillian_username', 'full_name', 'email', 'city',
-                    'country', 'negative', 'skip', 'positive', 'stellar']
+                    'country', 'negative', 'skip', 'positive', 'stellar',
+                    'reps_display_name']
 
     def negative(self, obj):
         return obj.votes.filter(vote=-1).count()
