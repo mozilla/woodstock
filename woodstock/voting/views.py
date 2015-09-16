@@ -79,7 +79,7 @@ def dashboard(request):
         'status': status,
         'mozillians': mozillians,
         'blind': blind,
-        'event_ids': event_ids
+        'events': event_param
     }
     return render(request, 'dashboard.html', ctx)
 
@@ -112,9 +112,9 @@ def view_voting(request, id):
     if vote_form.is_valid():
         vote_form.save()
         if next_entry:
-            next_url = '{0}?blind={1}'.format(reverse('voting_view_voting',
-                                                      kwargs={'id': next_entry.id}),
-                                              blind)
+            url = reverse('voting_view_voting', kwargs={'id': next_entry.id})
+            params = 'blind={0}&events={1}'.format(blind, event_param)
+            next_url = '{0}?{1}'.format(url, params)
             return redirect(next_url)
         return redirect(dashboard)
 
@@ -124,6 +124,6 @@ def view_voting(request, id):
         'next_entry': next_entry,
         'previous_entry': previous_entry,
         'blind': blind,
-        'event_ids': event_ids
+        'events': event_param
     }
     return render(request, 'vote.html', ctx)
