@@ -16,16 +16,8 @@ API_RESULTS_LIMIT = 200
 MOZILLIANS_API_URL = settings.MOZILLIANS_API_URL
 
 
-def get_mozillian_by_email(email):
-    """Helper method to query API."""
-    data = {
-        'app_name': settings.MOZILLIANS_APP_NAME,
-        'app_key': settings.MOZILLIANS_APP_KEY,
-        'limit': API_RESULTS_LIMIT,
-        'email': email
-    }
-
-    url = MOZILLIANS_API_URL + '?' + urllib.urlencode(data)
+def query_mozillians_api(url):
+    """Helper method to query Mozillians.org API"""
     resp = requests.get(url)
 
     if not resp.status_code == 200:
@@ -38,6 +30,32 @@ def get_mozillian_by_email(email):
     return content['objects']
 
 
+def get_mozillian_by_email(email):
+    """Helper method to query API."""
+    data = {
+        'app_name': settings.MOZILLIANS_APP_NAME,
+        'app_key': settings.MOZILLIANS_APP_KEY,
+        'limit': API_RESULTS_LIMIT,
+        'email': email
+    }
+
+    url = MOZILLIANS_API_URL + '?' + urllib.urlencode(data)
+    return query_mozillians_api(url)
+
+
+def get_mozillian_by_username(username):
+    """Helper method to query API."""
+    data = {
+        'app_name': settings.MOZILLIANS_APP_NAME,
+        'app_key': settings.MOZILLIANS_APP_KEY,
+        'limit': API_RESULTS_LIMIT,
+        'username': username
+    }
+
+    url = MOZILLIANS_API_URL + '?' + urllib.urlencode(data)
+    return query_mozillians_api(url)
+
+
 def update_mozillian_profiles(queryset=None):
     """Sync MozillianProfile objects with mozillians.org"""
 
@@ -48,7 +66,11 @@ def update_mozillian_profiles(queryset=None):
         data = get_mozillian_by_email(mozillian.email)
 
         if not data:
-            continue
+            # Try to fetch by username
+            data = get_mozillian_by_username(mozillian.mozillian_username)
+
+            if not data:
+                continue
 
         if 'country' in data:
             mozillian.country = COUNTRIES.get(data['country'].upper(), '').capitalize()
