@@ -101,7 +101,6 @@ class ApplicationResource(resources.ModelResource):
                                                       application=obj,
                                                       preferred=preferred)
                     break
-                continue
 
         super(ApplicationResource, self).save_m2m(obj, data, dry_run)
 
