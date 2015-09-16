@@ -49,10 +49,14 @@
             {% else %}
               <img class="img-circle avatar" src="{% static 'img/shy.png' %}" />
             {% endif %}
-            <a href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
-               target="_blank"
-               class="btn btn-small visible-desktop">
-              Mozillians Profile
+            <a {% if mozillian.mozillian_username %}
+                 href="https://mozillians.org/en-US/u/{{ mozillian.mozillian_username }}"
+               {% else %}
+                 href="https://mozillians.org/en-US/search/?q={{ mozillian.email }}"
+               {% endif %}
+                 target="_blank"
+                 class="btn btn-small visible-desktop">
+                Mozillians Profile
             </a>
             <a href="https://bugzilla.mozilla.org/page.cgi?id=user_activity.html&action=run&who={{ mozillian.email }}"
                target="_blank"
