@@ -93,7 +93,8 @@ def view_voting(request, id):
     event_param = request.GET.get('events', u'1,2,3')
     event_ids = map(lambda x: int(x), event_param.split(','))
     applications = Application.objects.filter(event__id__in=event_ids)
-    mozillian_qs = MozillianProfile.objects.filter(application__in=applications)
+    mozillian_qs = MozillianProfile.objects.filter(
+        application__in=applications)
 
     mozillian = get_object_or_404(MozillianProfile, id=id)
     if mozillian.votes.filter(voter=request.user).exists():

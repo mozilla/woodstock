@@ -91,7 +91,7 @@ class MozillianProfile(models.Model):
     mozillian_username = models.CharField(max_length=100, default='')
     application = models.ForeignKey(Application, blank=True, null=True,
                                     on_delete=models.SET_NULL,
-                                    related_name='applications')
+                                    related_name='users')
     reps_display_name = models.CharField(max_length=255, default='')
 
     def __str__(self):
