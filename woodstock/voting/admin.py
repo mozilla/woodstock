@@ -169,7 +169,7 @@ class MozillianGroupResouce(resources.ModelResource):
         preferred = mozillianprofile.application.event.filter(
             preferredevent__preferred=True)
         if preferred:
-            return preferred[0]
+            return preferred[0].name
         return None
 
     def total_votes(self, mozillianprofile):
