@@ -131,6 +131,7 @@ class MozillianGroupResouce(resources.ModelResource):
     positive_votes = fields.Field()
     stellar_votes = fields.Field()
     total_votes = fields.Field()
+    application_id = fields.Field()
 
     class Meta:
         model = MozillianProfile
@@ -138,6 +139,9 @@ class MozillianGroupResouce(resources.ModelResource):
         report_skipped = True
         import_id_fields = ('mozillian_username',)
         fields = ('mozillian_username', 'email', 'application', 'full_name',)
+
+    def dehydrate_application_id(self, mozillianprofile):
+        return mozillianprofile.application.entry_id
 
     def dehydrate_negative_votes(self, mozillianprofile):
         return mozillianprofile.votes.filter(vote=-1).count()
@@ -221,7 +225,7 @@ class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
     search_fields = ('full_name', 'country', 'mozillian_username', 'email',
                      'reps_display_name',)
     actions = [update_profiles, get_rep_profiles]
-    list_display = ['mozillian_username', 'full_name', 'email', 'city',
+    list_display = ['entry_id', 'mozillian_username', 'full_name', 'email', 'city',
                     'country', 'negative', 'skip', 'positive', 'stellar',
                     'reps_display_name']
 
@@ -236,6 +240,9 @@ class MozillianProfileAdmin(ImportExportMixin, admin.ModelAdmin):
 
     def stellar(self, obj):
         return obj.votes.filter(vote=2).count()
+
+    def entry_id(self, obj):
+        return obj.application.entry_id
 
 
 class VoteResource(resources.ModelResource):
