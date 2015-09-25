@@ -132,6 +132,8 @@ class MozillianGroupResouce(resources.ModelResource):
     stellar_votes = fields.Field()
     total_votes = fields.Field()
     application_id = fields.Field()
+    events = fields.Field()
+    preferred_event = fields.Field()
 
     class Meta:
         model = MozillianProfile
@@ -154,6 +156,21 @@ class MozillianGroupResouce(resources.ModelResource):
 
     def dehydrate_stellar_votes(self, mozillianprofile):
         return mozillianprofile.votes.filter(vote=2).count()
+
+    def dehydrate_events(self, mozillianprofile):
+        events = mozillianprofile.application.event.all()
+
+        if events.exists():
+            all_events = ', '.join(x.name for x in events)
+            return all_events
+        return ''
+
+    def dehydrate_preferred_event(self, mozillianprofile):
+        preferred = mozillianprofile.application.event.filter(
+            preferredevent__preferred=True)
+        if preferred:
+            return preferred[0]
+        return None
 
     def total_votes(self, mozillianprofile):
         negatives = mozillianprofile.votes.filter(vote=-1).count()
