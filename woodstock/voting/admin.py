@@ -140,7 +140,7 @@ class MozillianGroupResouce(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
         import_id_fields = ('mozillian_username',)
-        fields = ('mozillian_username', 'email', 'application', 'full_name',)
+        fields = ('mozillian_username', 'email', 'application', 'full_name', 'country', 'city',)
 
     def dehydrate_application_id(self, mozillianprofile):
         return mozillianprofile.application.entry_id
